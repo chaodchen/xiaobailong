@@ -1,0 +1,11 @@
+{
+  "name": "凤凰",
+  "main": "main.js",
+  "ignore": [
+    "build"
+  ],
+  "packageName": "com.example.fenghuang",
+  "versionName": "1.1.4",
+  "versionCode": 101004
+}
+
