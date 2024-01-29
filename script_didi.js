@@ -361,38 +361,12 @@ function __refresh6 () {
 
 // new 市内 城际 常用路线 发布形成 
 function newIntercity(type) {
-    let ref_function = null
     let success = false
     let ref_x = 0
     let ref_y = 0
 
     
-    if (type == 1) {
-        if (intercity_config.crosscity_goods) {
-            ref_function = __refresh1
-        } else if (intercity_config.intercity_goods) {
-            if (intercity_config.switch_sort) {
-                ref_function = __refresh1
-            } else if (intercity_config.thirty_minute) {
-                ref_function = __refresh6
-            }
-        } else if (intercity_config.common_route_goods) {
-            ref_function = __refresh2
-        }
-    } else if (type == 2){
-        let ref_backicon = id("back_icon").findOne(3 * 1000)
-        if (ref_backicon != null) {
-            ref_x = ref_backicon.bounds().centerX() * 3
-            ref_y = ref_backicon.bounds().centerY()
-            console.log("ref_x: %d, ref_y: %d", ref_x, ref_y)
-        }
-        // 区分下拉刷新和切换刷新
-        if (intercity_config.swipe_ref) {               // 下拉刷新
-            ref_function = swipeTop
-        } else if (intercity_config.switch_ref) {       // 切换刷新
-            ref_function = __refresh4
-        }
-    }
+
 
     try {
         if (console._livethread && console._livethread.isAlive()) {
@@ -436,13 +410,37 @@ function newIntercity(type) {
 
     do {
         // 刷新
-        ref_function()
+        if (type == 1) {
+            if (intercity_config.crosscity_goods) {
+                __refresh1()
+            } else if (intercity_config.intercity_goods) {
+                if (intercity_config.switch_sort) {
+                    __refresh1()
+                } else if (intercity_config.thirty_minute) {
+                    __refresh6()
+                }
+            } else if (intercity_config.common_route_goods) {
+                __refresh2()
+            }
+        } else if (type == 2){
+            let ref_backicon = id("back_icon").findOne(3 * 1000)
+            if (ref_backicon != null) {
+                ref_x = ref_backicon.bounds().centerX() * 3
+                ref_y = ref_backicon.bounds().centerY()
+                console.log("ref_x: %d, ref_y: %d", ref_x, ref_y)
+            }
+            // 区分下拉刷新和切换刷新
+            if (intercity_config.swipe_ref) {               // 下拉刷新
+                swipeTop()
+            } else if (intercity_config.switch_ref) {       // 切换刷新
+                __refresh4()
+            }
+        }
+
+
         if (type == 2) click(ref_x, ref_y);
         console.log('开始延迟')
-        if (intercity_config.refresh_off > 0) {
-            console.log('开始延迟2')
-            sleep(random(intercity_config.refresh_on, intercity_config.refresh_off))
-        }
+        sleep(random(intercity_config.refresh_on, intercity_config.refresh_off))
         // 遍历
         // if (success) break;
         console.log('订单列表 start')
@@ -504,7 +502,6 @@ function newIntercity(type) {
             }
             
             if (!__checkTargetDistance(target_distance.text())) return;
-
             if (!__checkDate(time_title.text())) return;
             if (!__checkStartingPointDistance(distance[0].text())) return;
             if (type == 2) {
