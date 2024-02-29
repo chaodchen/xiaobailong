@@ -263,7 +263,7 @@ module.exports = {
     ),
     callback: function(view, script) {
         ui[didi_popup_id('save-and-listen')].on('click', function() {
-            if (console.errorr <= 0) return
+            // if (console.errorr <= 0) return
             if (!getPermission()) return
             storage.put(didi_popup_id('listen-notice'), ui[didi_popup_id('listen-notice')].isChecked())
             storage.put(didi_popup_id('today'), ui[didi_popup_id('today')].isChecked())
@@ -284,7 +284,7 @@ module.exports = {
         })
         // 市内 跨城
         ui[didi_intercity_id('save-and-opendidi')].on('click', function() {
-            if (console.errorr <= 0) return
+            // if (console.errorr <= 0) return
             if (!getPermission()) return
 
             storage.put(didi_intercity_id('intercity-goods'), ui[didi_intercity_id('intercity-goods')].isChecked())
@@ -336,7 +336,7 @@ module.exports = {
 
         // 发布行程
         ui[didi_publish_itinerary_id('save-and-opendidi')].on('click', function() {
-            if (console.errorr <= 0) return
+            // if (console.errorr <= 0) return
             if (!getPermission()) return
 
             console.log('发布行程')
