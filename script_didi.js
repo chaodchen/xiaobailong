@@ -449,9 +449,7 @@ function refresh() {
                     }
                 } else if (intercity_config.thirty_minute) {
                     // 3分钟
-                    if (refresh_view[0].bt2.click()) {
-                        while(!refresh_view[0].bt2.click());
-                    }
+                    refresh_view[0].bt2.click()
                 }
             } else if (intercity_config.crosscity_goods) {
                 if (intercity_config.switch_sort2) {
@@ -464,9 +462,7 @@ function refresh() {
                     }
                 } else if (intercity_config.paid) {
                     // 已支付
-                    if (refresh_view[1].bt2.click()) {
-                        while(!refresh_view[1].bt2.click());
-                    }
+                    refresh_view[1].bt2.click()
                 }
             } else if (intercity_config.common_route_goods) {
                 if (!refresh_view[2].list1) return false
@@ -505,14 +501,14 @@ function initRefreshViews() {
             if (!refresh_view[0].bt1) refresh_view[0].bt1 = id(idfix+'tv_filter_name').text('出发时间-从早到晚').findOnce()
             if (!refresh_view[0].bt1) refresh_view[0].bt1 = id(idfix+'tv_filter_name').text('订单价格-从高到低').findOnce()
             if (!refresh_view[0].bt1) refresh_view[0].bt1 = id(idfix+'tv_filter_name').text('接驾距离-从近到远').findOnce()
-            refresh_view[0].bt2 = id(idfix+"tv_tag_name").text("30分钟内出发").findOnce()
+            refresh_view[0].bt2 = id(idfix+"bt_refresh").findOnce()
             if (!refresh_view[0].bt2 || !refresh_view[0].bt1) return false
         } else if (intercity_config.crosscity_goods) {
             refresh_view[1].bt1 = id(idfix+'tv_filter_name').text('智能排序').findOnce()
             if (!refresh_view[1].bt1) refresh_view[1].bt1 = id(idfix+'tv_filter_name').text('出发时间-从早到晚').findOnce()
             if (!refresh_view[1].bt1) refresh_view[1].bt1 = id(idfix+'tv_filter_name').text('订单价格-从高到低').findOnce()
             if (!refresh_view[1].bt1) refresh_view[1].bt1 = id(idfix+'tv_filter_name').text('接驾距离-从近到远').findOnce()
-            refresh_view[1].bt2 = id(idfix+"tv_tag_name").text("已支付").findOnce()
+            refresh_view[1].bt2 = id(idfix+"bt_refresh").findOnce()
             if (!refresh_view[1].bt2 || !refresh_view[1].bt1) return false
         } else if (intercity_config.common_route_goods) {
             refresh_view[2].list1 = id(idfix+'rv_route_list').findOnce()

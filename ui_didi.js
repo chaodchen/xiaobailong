@@ -77,14 +77,14 @@ module.exports = {
                                 <text text='刷新方式: '></text>
                                 <radiogroup orientation='horizontal'>
                                     <radio id={didi_intercity_id('switch-sort')} text='切换排序' checked={storage.get(didi_intercity_id('switch-sort'), 'true')}></radio>
-                                    <radio id={didi_intercity_id('thirty-minute')} text='30分钟内出发' checked={storage.get(didi_intercity_id('thirty-minute'), 'flase')}></radio>
+                                    <radio id={didi_intercity_id('thirty-minute')} text='刷新按钮' checked={storage.get(didi_intercity_id('thirty-minute'), 'flase')}></radio>
                                 </radiogroup>
                             </horizontal>
                             <horizontal id='ref-mode4' visibility={storage.get(didi_intercity_id('crosscity-goods')) == false ? 'gone' : 'visible'}>
                                 <text text='刷新方式: '></text>
                                 <radiogroup orientation='horizontal'>
                                     <radio id={didi_intercity_id('switch-sort2')} text='切换排序' checked={storage.get(didi_intercity_id('switch-sort2'), 'true')}></radio>
-                                    <radio id={didi_intercity_id('paid')} text='已支付' checked={storage.get(didi_intercity_id('paid'), 'flase')}></radio>
+                                    <radio id={didi_intercity_id('paid')} text='刷新按钮' checked={storage.get(didi_intercity_id('paid'), 'flase')}></radio>
                                 </radiogroup>
                             </horizontal>
                             <horizontal id='ref-mode3' visibility={storage.get(didi_intercity_id('common-route-goods')) == false ? 'gone' : 'visible'}>
