@@ -1,3 +1,61 @@
+
+let exclusive_or_carpooling = 0
+
+let tabs = []
+
+// 刷新控件
+let refresh_view = [{},{},{},{}]
+// 全局类型
+let global_type = 1
+const idfix = 'com.sdu.didi.psnger:id/'
+let intercity_config = null
+// 市内/城际/常用路线/发布行程 1/2/3/4
+// function itemConfig(type) {
+//     let result_array = []
+//     let goodListViwe = id(idfix+'order_card_recycler').findOne(3 * 1000)
+//     if (goodListViwe == null) return result_array;
+//     goodListViwe.children().forEach(function(child, index) {
+//         if (child == null) return;
+//         let result = {}
+//         try {
+//             if (type == 4) {
+//                 // 顺路
+//                 result.ontheway = child.child(0).child(0).child(0).text()
+//                 // 时间     
+//                 result.date = child.child(0).child(0).child(1).text()
+//                 // 终点距离
+//                 result.distance_of_end = child.child(0).child(1).child(6).text()
+//             } else if (type == 1 || type == 2) {
+//                 // 顺路
+//                 result.ontheway = null
+//                 // 时间     
+//                 result.date = child.child(0).child(0).child(0).text()
+//                 // 终点距离
+//                 result.distance_of_end = null
+//             } else if (type == 3) {
+//                 // 顺路
+//                 result.ontheway = child.child(0).child(0).child(0).text()
+//                 // 时间     
+//                 result.date = child.child(0).child(0).child(1).text()
+//                 // 终点距离
+//                 result.distance_of_end = child.child(0).child(1).child(6).text()
+//             }
+//             // 起点距离
+//             result.distance_of_start = child.child(0).child(1).child(2).text()
+//             // 独享、订单里程
+//             result.type_and_mileage =  child.child(0).child(5).child(0).child(0).text()
+//             // 金额
+//             result.gold = child.child(0).child(3).child(0).child(0).text()
+//             // 发送按钮
+//             result.send_button = send_button = child.child(0).child(8)
+//         } catch (err) {
+//             result = null
+//         }
+//         result_array.push(result)
+//     })
+//     return result_array;
+// }
+
 // 发布行程初始化
 function init_push_trip () {
     intercity_config = {
@@ -93,17 +151,15 @@ function init_intercity() {
         },
         
 
-        switch_sort : Number(console._storage.get(console._didi_intercity_id('switch-sort'))),
-        thirty_minute : Number(console._storage.get(console._didi_intercity_id('thirty-minute'))),
+        switch_sort : console._storage.get(console._didi_intercity_id('switch-sort')),
+        switch_sort2 : console._storage.get(console._didi_intercity_id('switch-sort2')),
+
+        thirty_minute : console._storage.get(console._didi_intercity_id('thirty-minute')),
+        paid : console._storage.get(console._didi_intercity_id('paid')),
     }
     console.log(intercity_config)
 }
 
-let exclusive_or_carpooling = 0
-
-let tabs = []
-
-const idfix = 'com.sdu.didi.psnger:id/'
 function swipeTop() {
     swipe(device.width/2, Math.floor(device.height*0.5), device.width/2, Math.floor(device.height*0.9), 500)
     while(text('加载中...').exists());
@@ -144,10 +200,6 @@ function extractNumbersAndDecimals(inputString) {
     const regex = /(\d+\.\d+|\d+)/g;
     const matches = inputString.match(regex);
     return matches;
-}
-
-function listen_orders() {
-
 }
 
 
@@ -299,99 +351,59 @@ function __checkOnTheway(ontheway) {
 
 }
 
-function __refresh1() {
-    let filter = id(idfix+'tv_filter_name').text('智能排序').findOnce()
-    if (!filter) {
-        filter = id(idfix+'tv_filter_name').text('出发时间-从早到晚').findOnce()
-    }
-    if (!filter) {
-        filter = id(idfix+'tv_filter_name').text('订单价格-从高到低').findOnce()
-    }
-    if (!filter) {
-        filter = id(idfix+'tv_filter_name').text('接驾距离-从近到远').findOnce()
-    }
-    if (!filter) return
-    if (!filter.click()) return
-    sleep(300)
-    let x = filter.bounds().centerX()
-    let y = filter.bounds().centerY() + Math.floor((device.width / 1080 ) * 140)
-    click(x, y)
-    // sleep(300)
-}
-
-function __refresh2() {
-    let rvlist = id(idfix+'rv_route_list').findOnce()
-    if (!rvlist) return
-    if (intercity_config.only_ref) {
-        // if (rvlist.childCount() < 2) return;
-        if (!rvlist.child(0).click()) return;
-    } else if (intercity_config.two_ref) {
-        // if (rvlist.childCount() < 3) return;
-        if (!rvlist.child(1).click()) return;
-        if (!rvlist.child(0).click()) return;
-    }
-
-}
-
-function ref_switch(start, end) {
-    sleep(1)
-    let start_switch = id(idfix+'sfc_drv_wait_sort_button').text(start).findOnce()
-    sleep(1)
-    let end_switch = id(idfix+'sfc_drv_wait_sort_button').text(end).findOnce()
-    sleep(1)
-    if (start_switch && end_switch) {
-        if (start_switch.click()) {
-            sleep(1)
-            while(!end_switch.click());
-        }
-    }
-}
-
-function __refresh4() {
-    ref_switch(tabs[1], tabs[0])
-    while(text('加载中...').exists());
-}
-
-function __refresh6 () {
-    let refview = id(idfix+"tv_tag_name").text("30分钟内出发").findOnce()
-    if (refview && refview.click()) {
-        while(!refview.click());
-    }
-}
-
-// new 市内 城际 常用路线 发布形成 
-function newIntercity(type) {
-    let success = false
-    let ref_x = 0
-    let ref_y = 0
-
-    
-
-
-    try {
-        if (console._livethread && console._livethread.isAlive()) {
-            console._livethread.interrupt()
-        }
-    } catch (e) {
-        console.error(e)
-    }
-
-    console._livethread = threads.start(function(){
-        while (1) {
-            let closebutton = id(idfix+'popClose').findOnce()
-
-            if (!closebutton) {
-                closebutton = id(idfix+'iv_close').findOnce()
+// 获取订单列表
+function getItemList() {
+    let result_array = []
+    let goodListViwe = id(idfix+'order_card_recycler').findOne(3 * 1000)
+    if (goodListViwe == null) return result_array;
+    goodListViwe.children().forEach(function(child, index) {
+        if (child == null) return;
+        let result = {}
+        try {
+            if (global_type == 2) {
+                // 顺路
+                result.ontheway = child.child(0).child(0).child(0).text()
+                // 时间     
+                result.date = child.child(0).child(0).child(1).text()
+                // 终点距离
+                result.distance_of_end = child.child(0).child(1).child(6).text()
+            } else if (global_type == 1) {
+                if (intercity_config.intercity_goods || 
+                    intercity_config.crosscity_goods) {
+                    // 顺路
+                    result.ontheway = null
+                    // 时间     
+                    result.date = child.child(0).child(0).child(0).text()
+                    // 终点距离
+                    result.distance_of_end = null
+                } else if (intercity_config.common_route_goods) {
+                    // 顺路
+                    result.ontheway = child.child(0).child(0).child(0).text()
+                    // 时间     
+                    result.date = child.child(0).child(0).child(1).text()
+                    // 终点距离
+                    result.distance_of_end = child.child(0).child(1).child(6).text()
+                }
             }
-            if (closebutton) closebutton.click()
-            sleep(500)
+            // 起点距离
+            result.distance_of_start = child.child(0).child(1).child(2).text()
+            // 独享、订单里程
+            result.type_and_mileage =  child.child(0).child(5).child(0).child(0).text()
+            // 金额
+            result.gold = child.child(0).child(3).child(0).child(0).text()
+            // 发送按钮
+            result.send_button = send_button = child.child(0).child(8)
+        } catch (err) {
+            result = null
         }
+        result_array.push(result)
     })
+    return result_array;
+}
 
-    success = false
-
-    while (1) {
-        if (type == 1) {
+function waitWorkActivity() {
+    for(;;) {
+        if (global_type == 1) {
             let intercityTab = null
             if (intercity_config.intercity_goods) {
                 intercityTab = id(idfix+'sfc_tab_item_text').text('市内订单').findOnce()
@@ -402,189 +414,250 @@ function newIntercity(type) {
             }
             if (!intercityTab) continue
             if (intercityTab.parent().click()) break
-        } else if (type == 2) {
-            break
+        } else if (global_type == 2) {
+            if (text("正在寻找顺路乘客").exists()) break;
         }
     }
-    sleep(1000)
+}
 
-    do {
-        // 刷新
-        if (type == 1) {
-            if (intercity_config.crosscity_goods) {
-                __refresh1()
-            } else if (intercity_config.intercity_goods) {
+function initOtherThreads() {
+    try {
+        if (console._livethread && console._livethread.isAlive()) console._livethread.interrupt();
+    } catch (e) {
+        console.error(e)
+    }
+    console._livethread = threads.start(function(){
+        for(;;) {
+            let closebutton = id(idfix+'popClose').findOnce() || id(idfix+'iv_close').findOnce();
+            if (closebutton != null) closebutton.click()
+            sleep(1 * 1000)
+        }
+    })
+}
+
+function refresh() {
+    try {
+        if (global_type == 1) {
+            if (intercity_config.intercity_goods) {
                 if (intercity_config.switch_sort) {
-                    __refresh1()
+                    // 切换刷新
+                    if (refresh_view[0].bt1.click()) {
+                        sleep(500)
+                        let x = refresh_view[0].bt1.bounds().centerX()
+                        let y = refresh_view[0].bt1.bounds().centerY() + Math.floor((device.width / 1080 ) * 140)
+                        click(x, y)
+                    }
                 } else if (intercity_config.thirty_minute) {
-                    __refresh6()
+                    // 3分钟
+                    if (refresh_view[0].bt2.click()) {
+                        while(!refresh_view[0].bt2.click());
+                    }
+                }
+            } else if (intercity_config.crosscity_goods) {
+                if (intercity_config.switch_sort2) {
+                    // 切换刷新
+                    if (refresh_view[1].bt1.click()) {
+                        sleep(300)
+                        let x = refresh_view[1].bt1.bounds().centerX()
+                        let y = refresh_view[1].bt1.bounds().centerY() + Math.floor((device.width / 1080 ) * 140)
+                        click(x, y)
+                    }
+                } else if (intercity_config.paid) {
+                    // 已支付
+                    if (refresh_view[1].bt2.click()) {
+                        while(!refresh_view[1].bt2.click());
+                    }
                 }
             } else if (intercity_config.common_route_goods) {
-                __refresh2()
+                if (!refresh_view[2].list1) return false
+                if (intercity_config.only_ref) {
+                    // if (rvlist.childCount() < 2) return;
+                    if (!refresh_view[2].list1.child(0).click()) return;
+                } else if (intercity_config.two_ref) {
+                    // if (rvlist.childCount() < 3) return;
+                    if (!refresh_view[2].list1.child(1).click()) return;
+                    if (!refresh_view[2].list1.child(0).click()) return;
+                }
             }
-        } else if (type == 2){
-            let ref_backicon = id("back_icon").findOne(3 * 1000)
-            if (ref_backicon != null) {
-                ref_x = ref_backicon.bounds().centerX() * 3
-                ref_y = ref_backicon.bounds().centerY()
-                console.log("ref_x: %d, ref_y: %d", ref_x, ref_y)
-            }
-            // 区分下拉刷新和切换刷新
+        } else if (global_type == 2) {
             if (intercity_config.swipe_ref) {               // 下拉刷新
                 swipeTop()
             } else if (intercity_config.switch_ref) {       // 切换刷新
-                __refresh4()
+                if (refresh_view[3].bt1.click()) {
+                    sleep(1)
+                    while(!refresh_view[3].bt2.click());
+                }
             }
         }
+    } catch (e) {
+        console.error(e)
+        console.error('刷新失败')
+        return false
 
+    }
+    return true
+}
 
-        if (type == 2) click(ref_x, ref_y);
-        console.log('开始延迟')
+function initRefreshViews() {
+    if (global_type == 1) {
+        if (intercity_config.intercity_goods) {
+            refresh_view[0].bt1 = id(idfix+'tv_filter_name').text('智能排序').findOnce()
+            if (!refresh_view[0].bt1) refresh_view[0].bt1 = id(idfix+'tv_filter_name').text('出发时间-从早到晚').findOnce()
+            if (!refresh_view[0].bt1) refresh_view[0].bt1 = id(idfix+'tv_filter_name').text('订单价格-从高到低').findOnce()
+            if (!refresh_view[0].bt1) refresh_view[0].bt1 = id(idfix+'tv_filter_name').text('接驾距离-从近到远').findOnce()
+            refresh_view[0].bt2 = id(idfix+"tv_tag_name").text("30分钟内出发").findOnce()
+            if (!refresh_view[0].bt2 || !refresh_view[0].bt1) return false
+        } else if (intercity_config.crosscity_goods) {
+            refresh_view[1].bt1 = id(idfix+'tv_filter_name').text('智能排序').findOnce()
+            if (!refresh_view[1].bt1) refresh_view[1].bt1 = id(idfix+'tv_filter_name').text('出发时间-从早到晚').findOnce()
+            if (!refresh_view[1].bt1) refresh_view[1].bt1 = id(idfix+'tv_filter_name').text('订单价格-从高到低').findOnce()
+            if (!refresh_view[1].bt1) refresh_view[1].bt1 = id(idfix+'tv_filter_name').text('接驾距离-从近到远').findOnce()
+            refresh_view[1].bt2 = id(idfix+"tv_tag_name").text("已支付").findOnce()
+            if (!refresh_view[1].bt2 || !refresh_view[1].bt1) return false
+        } else if (intercity_config.common_route_goods) {
+            refresh_view[2].list1 = id(idfix+'rv_route_list').findOnce()
+            if (refresh_view[2].list1 == null) return false
+        }
+    } else if (global_type == 2) {
+        refresh_view[3].bt1 = id(idfix+'sfc_drv_wait_sort_button').text(tabs[1]).findOnce()
+        refresh_view[3].bt2 = id(idfix+'sfc_drv_wait_sort_button').text(tabs[0]).findOnce()
+        if (!refresh_view[3].bt2 || !refresh_view[3].bt1) return false
+    }
+    return true
+}
+
+function checkItem(item) {
+    // 独享还是拼单
+    if (item.type_and_mileage.slice(2, 4) == '独享' && intercity_config.exclusive.state) {
+        exclusive_or_carpooling = 0
+    } else if (item.type_and_mileage.slice(2, 4) == '愿拼' && intercity_config.carpooling.state) {
+        exclusive_or_carpooling = 1
+    } else {
+        return false
+    }
+    // check人数
+    if (!__checkTargetDistance(item.type_and_mileage)) return false;
+    // check时间
+    if (!__checkDate(item.date)) return false;
+    // check起点
+    if (!__checkStartingPointDistance(item.distance_of_start)) return false;
+    // check金钱
+    if (!__checkMoney(item.gold)) return false;
+
+    // 补充的一些check
+    if (global_type == 2) {
+        // 发布行程
+        if (!__checkStartingPointDistance(item.distance_of_end)) return false;
+    } else if (global_type == 1) {
+        if (intercity_config.intercity_goods || 
+            intercity_config.crosscity_goods) {
+            // 市内 跨城
+        } else if (intercity_config.common_route_goods) {
+            // 常用路线
+            if (!__checkOnTheway(item.ontheway)) return false;
+            if (!__checkEndPointDistance(item.distance_of_end)) return false;
+        }
+    }
+    return true
+}
+
+// new 市内 城际 常用路线 发布形成 
+function newIntercity() {
+    let success = false
+    // 初始化其他线程
+    initOtherThreads()
+    // 等待出现在工作窗口
+    waitWorkActivity()
+    // 初始化刷新模块
+    while (!initRefreshViews()) {
+        console.error('初始化刷新模块失败')
+        sleep(1 * 1000)
+    }
+    sleep(1 * 1000)
+    do {
+        // 刷新
+        if (refresh() == false) continue;
+        // 开始延迟
         sleep(random(intercity_config.refresh_on, intercity_config.refresh_off))
-        // 遍历
-        // if (success) break;
-        console.log('订单列表 start')
-        let goodListViwe = id(idfix+'order_card_recycler').findOne(3 * 1000)
-        console.log('订单列表 end')
+        // 开始获取订单信息列表
+        let itemlist = getItemList()
+        if (itemlist.length == 0) continue;
+        console.log('开始处理订单信息')
+        for (let index = 0; index < itemlist.length; index++) {
+            if (success) break
+            if (itemlist[index] == null) break
+            console.log('开始check [%d]', index)
+            if (checkItem(itemlist[index])) {
+                console.log('check成功')
+                if (itemlist[index].send_button != null &&
+                    itemlist[index].send_button.clickable()) {
+                    if (itemlist[index].send_button.click()) {
+                        // 点击开始邀请
+                        let istimeout = false
+                        let temp_th = threads.start(function(){
+                            sleep(6 * 1000)
+                            istimeout = true
+                        })
+                        let okclick = false
+                        // 不停点击确认
+                        while (!istimeout) {
+                            let ok1 = id(idfix + "btn_main_title").text('确认').findOne(3 * 1000)
+                            if (ok1) {
+                                ok1.parent().parent().click()
+                                okclick = true
+                                continue
+                            }
 
-        if (goodListViwe == null) {
-            console.log('找不到订单列表')
-            continue
-        }
-        console.log("订单数量: %d", goodListViwe.childCount())
-        goodListViwe.children().forEach(function(child, index) {
-            if (success || !child) return;
-            
-            // 时间
-            let time_title = child.findOne(id(idfix+'sfc_order_card_time_title'))
-            // 兼容新版的时间id控件
-            if (time_title == null) time_title = child.findOne(id(idfix+'sfc_new_order_card_time_title'))
-            
-            // 起点和终点距离
-            let distance = child.find(id(idfix+'unordered_list_right_tv_sub'))
-            if (distance.length < 2) {
-                distance = []
-                let distance_0 = child.findOne(id(idfix+'from_tv_tag'))
-                let distance_1 = child.findOne(id(idfix+'to_tv_tag'))
-                if (distance_0) distance.push(distance_0)
-                if (distance_1) distance.push(distance_1)
-                console.log("distance.length: %d", distance.length)
-            }
-            
-            // 订单里程
-            let target_distance = child.findOne(id(idfix+'sfc_order_card_tips_content'))
-
-            // 订单金额
-            let money = child.findOne(id(idfix+'sfc_order_price_content'))
-
-            if (!time_title) {
-                console.log('时间找不到')
-                return
-            }
-            if (distance.length < 2) {
-                console.log('distance < 2');
-                return
-            }
-            if (!target_distance) {
-                console.log('目标距离');
-                return
-            }
-            if (!money) {
-                console.log('金额没找到');
-                return
-            }
-
-            // 先判断独享和拼单
-            if (target_distance.text().slice(2, 4) == '独享') {
-                exclusive_or_carpooling = 0
-            } else if (target_distance.text().slice(2, 4) == '愿拼') {
-                exclusive_or_carpooling = 1
-            }
-            
-            if (!__checkTargetDistance(target_distance.text())) return;
-            if (!__checkDate(time_title.text())) return;
-            if (!__checkStartingPointDistance(distance[0].text())) return;
-            if (type == 2) {
-                if (!__checkEndPointDistance(distance[1].text())) return;
-            }
-            if (!__checkMoney(money.text())) return;
-
-            // 常用路线订单需要校验顺路之类的东西
-            if (type == 1 && intercity_config.common_route_goods) {
-                let ontheway = child.findOne(id(idfix+'sfc_order_card_degree_title'))
-                if (!ontheway) ontheway = child.findOne(id(idfix+'sfc_new_order_card_degree_title'))
-                if (!ontheway) return;
-
-                if (!__checkOnTheway(ontheway.text())) return;
-                let distance_end = distance[1]
-                if (!distance_end) return;
-                if (!__checkEndPointDistance(distance_end.text())) return;
-            }
-
-            // 符合所有条件 开始接单
-            console.log('开始邀请')
-            let invitation = child.findOne(id(idfix+'sfc_wait_list_send_invit_button'))
-            let istimeout = false
-            
-            let temp_th = threads.start(function(){
-                sleep(6 * 1000)
-                istimeout = true
-            })
-
-            let okclick = false
-            if (invitation && invitation.click()) {
-                while (!istimeout) {
-                    console.log('aaaaaaaaaaaaa')
-                    let ok1 = id(idfix + "btn_main_title").text('确认').findOne(3 * 1000)
-                    if (ok1) {
-                        ok1.parent().parent().click()
-                        okclick = true
-                        continue
-                    }
-                    let zkk = id(idfix + "btn_main_title").text('再看看').findOnce()
-                    if (zkk) zkk.parent().parent().click();
-
-                    if (okclick) {
-                        if (id(idfix+"status_detail_btn").exists() ||
-                            id(idfix+"detail_title").exists()) {
-                            success = true
-                            console.log('邀请成功')
-                            break
+                            let zkk = id(idfix + "btn_main_title").text('再看看').findOnce()
+                            if (zkk) zkk.parent().parent().click();
+        
+                            if (okclick) {
+                                if (id(idfix+"status_detail_btn").exists() ||
+                                    id(idfix+"detail_title").exists()) {
+                                    success = true
+                                    console.log('邀请成功')
+                                    break
+                                }
+                            }
                         }
-                    }
-                }
-            }
+            
+                        try {
+                            if (temp_th && temp_th.isAlive()) {
+                                console.log('中断定时器')
+                                temp_th.interrupt()
+                            }
+                        } catch (e) {
+                            console.error(e)
+                        }
+            
+                        if (success == false) {
+                            if (global_type == 2) {
+                                while (!id(idfix+"back_icon").exists()) {
+                                    back()
+                                    sleep(2000)
+                                }
+                            } else if (global_type == 1) {
+                                while (!id(idfix+"ch_tab_name").text("顺风车").exists()) {
+                                    back()
+                                    sleep(2000)
+                                }
+                            }
+                        }
 
-            try {
-                if (temp_th && temp_th.isAlive()) {
-                    console.log('中断定时器')
-                    temp_th.interrupt()
+                    }
                 }
-            } catch (e) {
-                console.error(e)
             }
+        }
+        if (success) break
 
-            if (success == false) {
-                if (type == 2 ) {
-                    while (!id(idfix+"back_icon").exists()) {
-                        back()
-                        sleep(2000)
-                    }
-                } else if (type == 1) {
-                    while (!id(idfix+"ch_tab_name").text("顺风车").exists()) {
-                        back()
-                        sleep(2000)
-                    }
-                }
-            }
-        })
     } while(!success);
     console.log('接单成功')
     console._play_music()
 }
 
 function intercity() {
-    newIntercity(1)
+    global_type = 1
+    newIntercity()
 }
 
 function pushTrip() {
@@ -598,7 +671,8 @@ function pushTrip() {
         tabs.push('智能排序')
         tabs.push('起点最近')
     }
-    newIntercity(2)
+    global_type = 2
+    newIntercity()
 }
 
 function listen_orders() {

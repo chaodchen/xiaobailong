@@ -73,14 +73,21 @@ module.exports = {
                                 <input id={didi_intercity_id('refresh-off')} text={storage.get(didi_intercity_id('refresh-off'), '1500')} inputType='number'></input>
                                 <text text=' 毫秒'></text>
                             </horizontal>
-                            <horizontal id='ref-mode2' visibility={storage.get(didi_publish_itinerary_id('intercity-goods')) == false ? 'gone' : 'visible'}>
+                            <horizontal id='ref-mode2' visibility={storage.get(didi_intercity_id('intercity-goods')) == false ? 'gone' : 'visible'}>
                                 <text text='刷新方式: '></text>
                                 <radiogroup orientation='horizontal'>
                                     <radio id={didi_intercity_id('switch-sort')} text='切换排序' checked={storage.get(didi_intercity_id('switch-sort'), 'true')}></radio>
                                     <radio id={didi_intercity_id('thirty-minute')} text='30分钟内出发' checked={storage.get(didi_intercity_id('thirty-minute'), 'flase')}></radio>
                                 </radiogroup>
                             </horizontal>
-                            <horizontal id='ref-mode3' visibility={storage.get(didi_publish_itinerary_id('common-route-goods')) == false ? 'gone' : 'visible'}>
+                            <horizontal id='ref-mode4' visibility={storage.get(didi_intercity_id('crosscity-goods')) == false ? 'gone' : 'visible'}>
+                                <text text='刷新方式: '></text>
+                                <radiogroup orientation='horizontal'>
+                                    <radio id={didi_intercity_id('switch-sort2')} text='切换排序' checked={storage.get(didi_intercity_id('switch-sort2'), 'true')}></radio>
+                                    <radio id={didi_intercity_id('paid')} text='已支付' checked={storage.get(didi_intercity_id('paid'), 'flase')}></radio>
+                                </radiogroup>
+                            </horizontal>
+                            <horizontal id='ref-mode3' visibility={storage.get(didi_intercity_id('common-route-goods')) == false ? 'gone' : 'visible'}>
                                 <text text='刷新方式: '></text>
                                 <radiogroup orientation='horizontal'>
                                     <radio id={didi_intercity_id('only-ref')} text='单路线刷新' checked={storage.get(didi_intercity_id('only-ref'), 'true')}></radio>
@@ -263,7 +270,7 @@ module.exports = {
     ),
     callback: function(view, script) {
         ui[didi_popup_id('save-and-listen')].on('click', function() {
-            // if (console.errorr <= 0) return
+            if (console.errorr <= 0) return
             if (!getPermission()) return
             storage.put(didi_popup_id('listen-notice'), ui[didi_popup_id('listen-notice')].isChecked())
             storage.put(didi_popup_id('today'), ui[didi_popup_id('today')].isChecked())
@@ -284,7 +291,7 @@ module.exports = {
         })
         // 市内 跨城
         ui[didi_intercity_id('save-and-opendidi')].on('click', function() {
-            // if (console.errorr <= 0) return
+            if (console.errorr <= 0) return
             if (!getPermission()) return
 
             storage.put(didi_intercity_id('intercity-goods'), ui[didi_intercity_id('intercity-goods')].isChecked())
@@ -327,7 +334,11 @@ module.exports = {
             storage.put(didi_intercity_id('carpooling-on-theway-percentage'), ui[didi_intercity_id('carpooling-on-theway-percentage')].getText()+'')
 
             storage.put(didi_intercity_id('switch-sort'), ui[didi_intercity_id('switch-sort')].isChecked())
+            storage.put(didi_intercity_id('switch-sort2'), ui[didi_intercity_id('switch-sort2')].isChecked())
+
             storage.put(didi_intercity_id('thirty-minute'), ui[didi_intercity_id('thirty-minute')].isChecked())
+            storage.put(didi_intercity_id('paid'), ui[didi_intercity_id('paid')].isChecked())
+            // paid
             
             script.init_intercity()
             launch('com.sdu.didi.psnger')
@@ -336,7 +347,7 @@ module.exports = {
 
         // 发布行程
         ui[didi_publish_itinerary_id('save-and-opendidi')].on('click', function() {
-            // if (console.errorr <= 0) return
+            if (console.errorr <= 0) return
             if (!getPermission()) return
 
             console.log('发布行程')
@@ -347,7 +358,6 @@ module.exports = {
             storage.put(didi_publish_itinerary_id('on-theway-first'), ui[didi_publish_itinerary_id('on-theway-first')].isChecked())
             storage.put(didi_publish_itinerary_id('grade-down'), ui[didi_publish_itinerary_id('grade-down')].isChecked())
             storage.put(didi_publish_itinerary_id('closest-starting-point'), ui[didi_publish_itinerary_id('closest-starting-point')].isChecked())
-
 
             storage.put(didi_publish_itinerary_id('refresh-on'), ui[didi_publish_itinerary_id('refresh-on')].getText()+'')
             storage.put(didi_publish_itinerary_id('refresh-off'), ui[didi_publish_itinerary_id('refresh-off')].getText()+'')
@@ -390,6 +400,7 @@ module.exports = {
 
                 ui['ref-mode2'].setVisibility(8)
                 ui['ref-mode3'].setVisibility(0)
+                ui['ref-mode4'].setVisibility(8)
 
             }
         })
@@ -400,6 +411,7 @@ module.exports = {
 
                 ui['ref-mode2'].setVisibility(0)
                 ui['ref-mode3'].setVisibility(8)
+                ui['ref-mode4'].setVisibility(8)
 
             }
         })
@@ -410,9 +422,12 @@ module.exports = {
 
                 ui['ref-mode2'].setVisibility(8)
                 ui['ref-mode3'].setVisibility(8)
+                ui['ref-mode4'].setVisibility(0)
+
 
             }
         })
+        
 
         ui[didi_publish_itinerary_id('switch-ref')].on('check', function(checked) {
             if (checked) ui['ref-mode'].setVisibility(0)
