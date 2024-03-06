@@ -4,6 +4,23 @@
   "ignore": [
     "build"
   ],
+  "icon": "res/logo.png",
+  "signingConfig": {
+    "alias": "chaod",
+    "keystore": "/storage/emulated/0/脚本/.keyStore/AutoX.keystore"
+  },
+  "launchConfig": {
+    "displaySplash": false,
+    "hideAccessibilityServices": false,
+    "hideLauncher": false,
+    "hideLogs": true,
+    "stableMode": false,
+    "volumeUpcontrol": false,
+    "permissions": [],
+    "serviceDesc": "使脚本自动操作(点击、长按、滑动等)所需，若关闭则只能执行不涉及自动操作的脚本。",
+    "splashIcon": "res/splashIcon.png",
+    "splashText": "Powered by Autoxjs.com"
+  },
   "packageName": "com.example.fenghuang",
   "versionName": "1.1.7",
   "versionCode": 101007
