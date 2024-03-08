@@ -138,71 +138,71 @@ module.exports = {
     ),
     callback: function(view, script) {
         // 市内 跨城
-        ui[halo_intercity_id('save-and-openhalo')].on('click', function() {
-            if (!getPermission()) return
-            if (console.errorr <= 0) return
-            storage.put(halo_intercity_id('intercity-goods'), ui[halo_intercity_id('intercity-goods')].isChecked())
-            storage.put(halo_intercity_id('crosscity-goods'), ui[halo_intercity_id('crosscity-goods')].isChecked())
+        // ui[halo_intercity_id('save-and-openhalo')].on('click', function() {
+        //     if (!getPermission()) return
+        //     if (console.errorr <= 0) return
+        //     storage.put(halo_intercity_id('intercity-goods'), ui[halo_intercity_id('intercity-goods')].isChecked())
+        //     storage.put(halo_intercity_id('crosscity-goods'), ui[halo_intercity_id('crosscity-goods')].isChecked())
             
-            storage.put(halo_intercity_id('refresh-on'), ui[halo_intercity_id('refresh-on')].getText()+'')
-            storage.put(halo_intercity_id('refresh-off'), ui[halo_intercity_id('refresh-off')].getText()+'')
+        //     storage.put(halo_intercity_id('refresh-on'), ui[halo_intercity_id('refresh-on')].getText()+'')
+        //     storage.put(halo_intercity_id('refresh-off'), ui[halo_intercity_id('refresh-off')].getText()+'')
 
-            storage.put(halo_intercity_id('today'), ui[halo_intercity_id('today')].isChecked())
-            storage.put(halo_intercity_id('tomorrow'), ui[halo_intercity_id('tomorrow')].isChecked())
-            storage.put(halo_intercity_id('after-tomorrow'), ui[halo_intercity_id('after-tomorrow')].isChecked())
+        //     storage.put(halo_intercity_id('today'), ui[halo_intercity_id('today')].isChecked())
+        //     storage.put(halo_intercity_id('tomorrow'), ui[halo_intercity_id('tomorrow')].isChecked())
+        //     storage.put(halo_intercity_id('after-tomorrow'), ui[halo_intercity_id('after-tomorrow')].isChecked())
 
-            storage.put(halo_intercity_id('time-on'), ui[halo_intercity_id('time-on')].getText()+'')
-            storage.put(halo_intercity_id('time-off'), ui[halo_intercity_id('time-off')].getText()+'')
+        //     storage.put(halo_intercity_id('time-on'), ui[halo_intercity_id('time-on')].getText()+'')
+        //     storage.put(halo_intercity_id('time-off'), ui[halo_intercity_id('time-off')].getText()+'')
             
-            storage.put(halo_intercity_id('exclusive'), ui[halo_intercity_id('exclusive')].isChecked())
-            storage.put(halo_intercity_id('carpooling'), ui[halo_intercity_id('carpooling')].isChecked())
-            storage.put(halo_intercity_id('people-exclusive-min'), ui[halo_intercity_id('people-exclusive-min')].getText()+'')
-            storage.put(halo_intercity_id('people-exclusive-max'), ui[halo_intercity_id('people-exclusive-max')].getText()+'')
-            storage.put(halo_intercity_id('people-carpooling-min'), ui[halo_intercity_id('people-carpooling-min')].getText()+'')
-            storage.put(halo_intercity_id('people-carpooling-max'), ui[halo_intercity_id('people-carpooling-max')].getText()+'')
+        //     storage.put(halo_intercity_id('exclusive'), ui[halo_intercity_id('exclusive')].isChecked())
+        //     storage.put(halo_intercity_id('carpooling'), ui[halo_intercity_id('carpooling')].isChecked())
+        //     storage.put(halo_intercity_id('people-exclusive-min'), ui[halo_intercity_id('people-exclusive-min')].getText()+'')
+        //     storage.put(halo_intercity_id('people-exclusive-max'), ui[halo_intercity_id('people-exclusive-max')].getText()+'')
+        //     storage.put(halo_intercity_id('people-carpooling-min'), ui[halo_intercity_id('people-carpooling-min')].getText()+'')
+        //     storage.put(halo_intercity_id('people-carpooling-max'), ui[halo_intercity_id('people-carpooling-max')].getText()+'')
 
-            storage.put(halo_intercity_id('money-min'), ui[halo_intercity_id('money-min')].getText()+'')
-            storage.put(halo_intercity_id('money-max'), ui[halo_intercity_id('money-max')].getText()+'')
-            storage.put(halo_intercity_id('starting-point'), ui[halo_intercity_id('starting-point')].getText()+'')
+        //     storage.put(halo_intercity_id('money-min'), ui[halo_intercity_id('money-min')].getText()+'')
+        //     storage.put(halo_intercity_id('money-max'), ui[halo_intercity_id('money-max')].getText()+'')
+        //     storage.put(halo_intercity_id('starting-point'), ui[halo_intercity_id('starting-point')].getText()+'')
             
-            script.init_intercity()
-            launch('com.jingyao.easybike')
-            my_floaty(script.intercity, null)
-        })
+        //     script.init_intercity()
+        //     launch('com.jingyao.easybike')
+        //     my_floaty(script.intercity, null)
+        // })
 
-        ui[halo_publish_itinerary_id('save-and-openhalo')].on('click', function() {
-            if (!getPermission()) return
-            if (console.errorr <= 0) return
+        // ui[halo_publish_itinerary_id('save-and-openhalo')].on('click', function() {
+        //     if (!getPermission()) return
+        //     if (console.errorr <= 0) return
             
-            storage.put(halo_publish_itinerary_id('refresh-on'), ui[halo_publish_itinerary_id('refresh-on')].getText()+'')
-            storage.put(halo_publish_itinerary_id('refresh-off'), ui[halo_publish_itinerary_id('refresh-off')].getText()+'')
+        //     storage.put(halo_publish_itinerary_id('refresh-on'), ui[halo_publish_itinerary_id('refresh-on')].getText()+'')
+        //     storage.put(halo_publish_itinerary_id('refresh-off'), ui[halo_publish_itinerary_id('refresh-off')].getText()+'')
         
-            storage.put(halo_publish_itinerary_id('today'), ui[halo_publish_itinerary_id('today')].isChecked())
-            storage.put(halo_publish_itinerary_id('tomorrow'), ui[halo_publish_itinerary_id('tomorrow')].isChecked())
-            storage.put(halo_publish_itinerary_id('after-tomorrow'), ui[halo_publish_itinerary_id('after-tomorrow')].isChecked())
+        //     storage.put(halo_publish_itinerary_id('today'), ui[halo_publish_itinerary_id('today')].isChecked())
+        //     storage.put(halo_publish_itinerary_id('tomorrow'), ui[halo_publish_itinerary_id('tomorrow')].isChecked())
+        //     storage.put(halo_publish_itinerary_id('after-tomorrow'), ui[halo_publish_itinerary_id('after-tomorrow')].isChecked())
         
-            storage.put(halo_publish_itinerary_id('time-on'), ui[halo_publish_itinerary_id('time-on')].getText()+'')
-            storage.put(halo_publish_itinerary_id('time-off'), ui[halo_publish_itinerary_id('time-off')].getText()+'')
+        //     storage.put(halo_publish_itinerary_id('time-on'), ui[halo_publish_itinerary_id('time-on')].getText()+'')
+        //     storage.put(halo_publish_itinerary_id('time-off'), ui[halo_publish_itinerary_id('time-off')].getText()+'')
             
-            storage.put(halo_publish_itinerary_id('exclusive'), ui[halo_publish_itinerary_id('exclusive')].isChecked())
-            storage.put(halo_publish_itinerary_id('carpooling'), ui[halo_publish_itinerary_id('carpooling')].isChecked())
-            storage.put(halo_publish_itinerary_id('people-exclusive-min'), ui[halo_publish_itinerary_id('people-exclusive-min')].getText()+'')
-            storage.put(halo_publish_itinerary_id('people-exclusive-max'), ui[halo_publish_itinerary_id('people-exclusive-max')].getText()+'')
-            storage.put(halo_publish_itinerary_id('people-carpooling-min'), ui[halo_publish_itinerary_id('people-carpooling-min')].getText()+'')
-            storage.put(halo_publish_itinerary_id('people-carpooling-max'), ui[halo_publish_itinerary_id('people-carpooling-max')].getText()+'')
+        //     storage.put(halo_publish_itinerary_id('exclusive'), ui[halo_publish_itinerary_id('exclusive')].isChecked())
+        //     storage.put(halo_publish_itinerary_id('carpooling'), ui[halo_publish_itinerary_id('carpooling')].isChecked())
+        //     storage.put(halo_publish_itinerary_id('people-exclusive-min'), ui[halo_publish_itinerary_id('people-exclusive-min')].getText()+'')
+        //     storage.put(halo_publish_itinerary_id('people-exclusive-max'), ui[halo_publish_itinerary_id('people-exclusive-max')].getText()+'')
+        //     storage.put(halo_publish_itinerary_id('people-carpooling-min'), ui[halo_publish_itinerary_id('people-carpooling-min')].getText()+'')
+        //     storage.put(halo_publish_itinerary_id('people-carpooling-max'), ui[halo_publish_itinerary_id('people-carpooling-max')].getText()+'')
         
-            storage.put(halo_publish_itinerary_id('money-min'), ui[halo_publish_itinerary_id('money-min')].getText()+'')
-            storage.put(halo_publish_itinerary_id('money-max'), ui[halo_publish_itinerary_id('money-max')].getText()+'')
+        //     storage.put(halo_publish_itinerary_id('money-min'), ui[halo_publish_itinerary_id('money-min')].getText()+'')
+        //     storage.put(halo_publish_itinerary_id('money-max'), ui[halo_publish_itinerary_id('money-max')].getText()+'')
         
-            storage.put(halo_publish_itinerary_id('starting-point'), ui[halo_publish_itinerary_id('starting-point')].getText()+'')
+        //     storage.put(halo_publish_itinerary_id('starting-point'), ui[halo_publish_itinerary_id('starting-point')].getText()+'')
 
-            storage.put(halo_publish_itinerary_id('on-theway-percentage'), ui[halo_publish_itinerary_id('on-theway-percentage')].getText()+'')
-            storage.put(halo_publish_itinerary_id('end-point'), ui[halo_publish_itinerary_id('end-point')].getText()+'')
+        //     storage.put(halo_publish_itinerary_id('on-theway-percentage'), ui[halo_publish_itinerary_id('on-theway-percentage')].getText()+'')
+        //     storage.put(halo_publish_itinerary_id('end-point'), ui[halo_publish_itinerary_id('end-point')].getText()+'')
 
             
-            script.init_push_trip()
-            launch('com.jingyao.easybike')
-            my_floaty(script.push_trip, null)
-        })
+        //     script.init_push_trip()
+        //     launch('com.jingyao.easybike')
+        //     my_floaty(script.push_trip, null)
+        // })
     }
 }

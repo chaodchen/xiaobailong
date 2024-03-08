@@ -20,6 +20,10 @@ console._halo_publish_itinerary_id = function (id) {
     return 'halo_publish_intercity_' + id
 }
 
+console._dida_intercity_id = function (id) {
+    return 'dida_intercity_' + id
+}
+
 console._play_music = function () {
     threads.start(function() {
         media.playMusic("./mydir/yalangdisco.mp3");
@@ -133,6 +137,9 @@ const ui_didi = require('ui_didi.js')
 
 const ui_halo = require('ui_halo.js')
 
+const ui_dida = require('ui_dida.js')
+
+
 const user = require('user.js')
 ui.statusBarColor("#b2b2b2");
 ui.layout(
@@ -149,7 +156,10 @@ ui.layout(
                 </ScrollView>
             </frame>
             <frame>
-                <text text="等待合并1" textColor="red" textSize="16sp"/>
+                <ScrollView>
+                    <vertical h='*' id='layout_dida'>
+                    </vertical>
+                </ScrollView>
             </frame>
             <frame>
                 <ScrollView>
@@ -198,6 +208,8 @@ ui_didi.callback(didi, require('script_didi.js'))
 let halo = ui.inflate(ui_halo.xml, ui.layout_halo, true)
 ui_halo.callback(halo, require('script_halo.js'))
 
+let dida = ui.inflate(ui_dida.xml, ui.layout_dida, true)
+ui_dida.callback(dida, require('script_dida.js'))
 
 setTimeout(function() {
     let km = console._storage.get('kami')
