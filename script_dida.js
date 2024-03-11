@@ -299,19 +299,19 @@ function getItemList() {
 
 function waitWorkActivity() {
     for(;;) {
-        if (global_type == 1) {
+        if (intercity_config.intercity_goods || intercity_config.crosscity_goods) {
             let intercityTab = null
             if (intercity_config.intercity_goods) {
-                intercityTab = id(idfix+'sfc_tab_item_text').text('市内订单').findOnce()
+                intercityTab = id(idfix+'ivTitleInnerCity').findOnce()
             } else if (intercity_config.crosscity_goods) {
-                intercityTab = id(idfix+'sfc_tab_item_text').text('跨城订单').findOnce()
-            } else if (intercity_config.common_route_goods) {
-                intercityTab = id(idfix+'sfc_tab_item_text').text('常用路线订单').findOnce()
+                intercityTab = id(idfix+'ivTitleInterCity').findOnce()
             }
             if (!intercityTab) continue
-            if (intercityTab.parent().click()) break
-        } else if (global_type == 2) {
-            if (text("正在寻找顺路乘客").exists()) break;
+            if (intercityTab.click()) break
+        } else if (intercity_config.common_route_goods) {
+            
+        } else if (intercity_config.publish_itinerary) {
+
         }
     }
 }
@@ -457,9 +457,8 @@ function checkItem(item) {
 function newIntercity() {
     let success = false
     console.log("Helo")
-    return
     // 初始化其他线程
-    initOtherThreads()
+    // initOtherThreads()
     // 等待出现在工作窗口
     waitWorkActivity()
     // 初始化刷新模块
