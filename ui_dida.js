@@ -105,6 +105,8 @@ module.exports = {
         // 市内 跨城
         ui[dida_intercity_id('save-and-opendida')].on('click', function() {
             if (console.errorr <= 0) return
+            toastLog("未完成...")
+            return
             if (!getPermission()) return
 
             storage.put(dida_intercity_id('intercity-goods'), ui[dida_intercity_id('intercity-goods')].isChecked())
