@@ -415,7 +415,7 @@ function waitWorkActivity() {
             if (!intercityTab) continue
             if (intercityTab.parent().click()) break
         } else if (global_type == 2) {
-            if (text("正在寻找顺路乘客").exists()) break;
+            if (text("正在寻找顺路乘客").exists() || text("正在努力寻找顺路乘客").exists()) break;
         }
     }
 }
