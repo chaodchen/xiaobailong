@@ -1,71 +1,45 @@
 
-// 发布行程初始化
-function init_push_trip () {
-    intercity_config = {
-        time_on: console._storage.get(console._halo_publish_itinerary_id('time-on')),
-        time_off: console._storage.get(console._halo_publish_itinerary_id('time-off')),
-
-        refresh_on : Number(console._storage.get(console._halo_publish_itinerary_id('refresh-on'))),
-        refresh_off : Number(console._storage.get(console._halo_publish_itinerary_id('refresh-off'))),
-
-        today : console._storage.get(console._halo_publish_itinerary_id('today')),
-        tomorrow : console._storage.get(console._halo_publish_itinerary_id('tomorrow')),
-        after_tomorrow : console._storage.get(console._halo_publish_itinerary_id('after-tomorrow')),
-
-        money_min : Number(console._storage.get(console._halo_publish_itinerary_id('money-min'))),
-        money_max : Number(console._storage.get(console._halo_publish_itinerary_id('money-max'))),
-
-        exclusive : {
-            state: console._storage.get(console._halo_publish_itinerary_id('exclusive')),
-            people_min: Number(console._storage.get(console._halo_publish_itinerary_id('people-exclusive-min'))),
-            people_max: Number(console._storage.get(console._halo_publish_itinerary_id('people-exclusive-max')))
-        },
-        carpooling: {
-            state: console._storage.get(console._halo_publish_itinerary_id('carpooling')),
-            people_min: Number(console._storage.get(console._halo_publish_itinerary_id('people-carpooling-min'))),
-            people_max: Number(console._storage.get(console._halo_publish_itinerary_id('people-carpooling-max')))
-        },
-        
-        on_theway_percentage : Number(console._storage.get(console._halo_publish_itinerary_id('on-theway-percentage'))),
-        starting_point : Number(console._storage.get(console._halo_publish_itinerary_id('starting-point'))),
-        end_point : Number(console._storage.get(console._halo_publish_itinerary_id('end-point'))),
-    }
-    console.log(intercity_config)
-}
 // 市内 城际初始化
 function init_intercity() {
+    
     intercity_config = {
-        intercity_goods: console._storage.get(console._halo_intercity_id('intercity-goods')),
-        crosscity_goods: console._storage.get(console._halo_intercity_id('crosscity-goods')),
+        refresh_on : Number(console._storage.get(console._halo_id('city-refresh-on'))),
+        refresh_off : Number(console._storage.get(console._halo_id('city-refresh-off'))),
 
-        refresh_on : Number(console._storage.get(console._halo_intercity_id('refresh-on'))),
-        refresh_off : Number(console._storage.get(console._halo_intercity_id('refresh-off'))),
+        today : console._storage.get(console._halo_id('city-today')),
+        tomorrow : console._storage.get(console._halo_id('city-tomorrow')),
+        after_tomorrow : console._storage.get(console._halo_id('city-after-tomorrow')),
 
-        today : console._storage.get(console._halo_intercity_id('today')),
-        tomorrow : console._storage.get(console._halo_intercity_id('tomorrow')),
-        after_tomorrow : console._storage.get(console._halo_intercity_id('after-tomorrow')),
+        time_on: console._storage.get(console._halo_id('city-time-on')),
+        time_off: console._storage.get(console._halo_id('city-time-off')),
 
-        time_on: console._storage.get(console._halo_intercity_id('time-on')),
-        time_off: console._storage.get(console._halo_intercity_id('time-off')),
+        money_min : Number(console._storage.get(console._halo_id('city-money-min'))),
+        money_max : Number(console._storage.get(console._halo_id('city-money-max'))),
 
-        money_min : Number(console._storage.get(console._halo_intercity_id('money-min'))),
-        money_max : Number(console._storage.get(console._halo_intercity_id('money-max'))),
-
-        starting_point : Number(console._storage.get(console._halo_intercity_id('starting-point'))),
+        starting_point : Number(console._storage.get(console._halo_id('city-starting-point'))),
 
         exclusive : {
-            state: console._storage.get(console._halo_intercity_id('exclusive')),
-            people_min: Number(console._storage.get(console._halo_intercity_id('people-exclusive-min'))),
-            people_max: Number(console._storage.get(console._halo_intercity_id('people-exclusive-max')))
+            state: console._storage.get(console._halo_id('city-exclusive')),
+            people_min: Number(console._storage.get(console._halo_id('city-exclusive-people-min'))),
+            people_max: Number(console._storage.get(console._halo_id('city-exclusive-people-max')))
         },
         carpooling: {
-            state: console._storage.get(console._halo_intercity_id('carpooling')),
-            people_min: Number(console._storage.get(console._halo_intercity_id('people-carpooling-min'))),
-            people_max: Number(console._storage.get(console._halo_intercity_id('people-carpooling-max')))
+            state: console._storage.get(console._halo_id('city-carpooling')),
+            people_min: Number(console._storage.get(console._halo_id('city-carpooling-people-min'))),
+            people_max: Number(console._storage.get(console._halo_id('city-carpooling-people-max')))
         },
-        // on_theway_percentage : Number(console._storage.get(console._halo_intercity_id('on-theway-percentage'))),
-        // end_point : Number(console._storage.get(console._halo_intercity_id('end-point'))),
-
+        comfort: {
+            state: console._storage.get(console._halo_id('city-comfort')),
+            people_min: Number(console._storage.get(console._halo_id('city-comfort-people-min'))),
+            people_max: Number(console._storage.get(console._halo_id('city-comfort-people-max')))
+        },
+        pullgoods: {
+            state: console._storage.get(console._halo_id('city-pullgoods')),
+            people_min: Number(console._storage.get(console._halo_id('city-pullgoods-people-min'))),
+            people_max: Number(console._storage.get(console._halo_id('city-pullgoods-people-max')))
+        },
+        // on_theway_percentage : Number(console._storage.get(console._halo_id('on-theway-percentage'))),
+        // end_point : Number(console._storage.get(console._halo_id('end-point'))),
     }
     console.log(intercity_config)
 }
@@ -391,7 +365,8 @@ function newIntercity(type) {
 }
 
 function intercity() {
-    newIntercity(1)
+    console.log("开始执行市内单子");
+    // newIntercity(1)
 }
 
 function pushTrip() {
@@ -436,6 +411,4 @@ function init_listen_orders() {
 module.exports = {
     init_intercity : init_intercity,
     intercity : intercity,
-    init_push_trip: init_push_trip,
-    push_trip: pushTrip,
 }

@@ -1,7 +1,7 @@
 "ui";
-// console.setGlobalLogConfig({
-//     "file": "/sdcard/aj.log"
-// });
+console.setGlobalLogConfig({
+    "file": "/sdcard/aj.log"
+});
 
 console._didi_popup_id = function (id) {
     return 'didi_popup_' + id
@@ -13,11 +13,8 @@ console._didi_publish_itinerary_id = function (id) {
     return 'didi_publish_intercity_' + id
 }
 
-console._halo_intercity_id = function (id) {
-    return 'halo_intercity_' + id
-}
-console._halo_publish_itinerary_id = function (id) {
-    return 'halo_publish_intercity_' + id
+console._halo_id = function (id) {
+    return 'halo_' + id
 }
 
 console._dida_intercity_id = function (id) {
@@ -148,7 +145,7 @@ ui.layout(
             <toolbar id="toolbar" title={console._project.name + ' v' + console._project.versionName} subtitle=''/>
             <tabs id="tabs"/>
         </appbar>
-        <viewpager id="viewpager" padding='3dp'>
+        <viewpager id="viewpager">
             <frame>
                 <ScrollView>
                     <vertical h='*' id='layout_didi'>
@@ -162,10 +159,8 @@ ui.layout(
                 </ScrollView>
             </frame>
             <frame>
-                <ScrollView>
-                    <vertical h='*' id='layout_halo'>
-                    </vertical>
-                </ScrollView>
+                <vertical h='*' id='layout_halo'>
+                </vertical>
             </frame>
         </viewpager>
     </vertical>
