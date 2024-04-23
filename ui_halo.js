@@ -200,8 +200,8 @@ module.exports = {
 
             // 执行
             script.init_intercity()
-            // launch('com.jingyao.easybike')
-            // my_floaty(script.intercity, null)
+            launch('com.jingyao.easybike')
+            my_floaty(script.intercity, null)
         })
 
     }
