@@ -8,7 +8,8 @@ function init_intercity() {
         today : console._storage.get(console._halo_id('city-today')),
         tomorrow : console._storage.get(console._halo_id('city-tomorrow')),
         after_tomorrow : console._storage.get(console._halo_id('city-otherday')),
-
+        expressway : console._storage.get(console._halo_id('city-expressway')),
+        
         exclusive : {
             state: console._storage.get(console._halo_id('city-exclusive')),
             people_min: Number(console._storage.get(console._halo_id('city-exclusive-people-min'))),

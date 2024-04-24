@@ -28,11 +28,13 @@ module.exports = {
                                                 <input id={halo_id('city-refresh-off')} text={storage.get(halo_id('city-refresh-off'), '1500')} inputType='number'></input>
                                                 <text text=' 毫秒'></text>
                                             </horizontal>
-                                            <text h='1dp' w='*' bg='#b2b2b2'></text>
                                             <horizontal>
                                                 <checkbox checked={storage.get(halo_id('city-today'), 'true')} text='今天' id={halo_id('city-today')}></checkbox>
                                                 <checkbox checked={storage.get(halo_id('city-tomorrow'), 'true')} text='明天' id={halo_id('city-tomorrow')}></checkbox>
                                                 <checkbox checked={storage.get(halo_id('city-otherday'), 'true')} text='明天以后' id={halo_id('city-otherday')}></checkbox>
+                                            </horizontal>
+                                            <horizontal>
+                                                <checkbox checked={storage.get(halo_id('city-expressway'), 'false')} text='只抢乘客承担高速公路费用' id={halo_id('city-expressway')}></checkbox>
                                             </horizontal>
                                             <text h='1dp' w='*' bg='#b2b2b2'></text>
                                             <horizontal>
@@ -151,10 +153,7 @@ module.exports = {
             storage.put(halo_id('city-today'), ui[halo_id('city-today')].isChecked())
             storage.put(halo_id('city-tomorrow'), ui[halo_id('city-tomorrow')].isChecked())
             storage.put(halo_id('city-otherday'), ui[halo_id('city-otherday')].isChecked())
-
-            
-            // storage.put(halo_id('city-time-on'), ui[halo_id('city-time-on')].getText()+'')
-            // storage.put(halo_id('city-time-off'), ui[halo_id('city-time-off')].getText()+'')
+            storage.put(halo_id('city-expressway'), ui[halo_id('city-expressway')].isChecked())
 
             storage.put(halo_id('city-exclusive'), ui[halo_id('city-exclusive')].isChecked())
             storage.put(halo_id('city-carpooling'), ui[halo_id('city-carpooling')].isChecked())
