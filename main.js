@@ -192,7 +192,7 @@ ui.emitter.on("options_item_selected", (e, item)=>{
 activity.setSupportActionBar(ui.toolbar);
 
 //设置滑动页面的标题
-ui.viewpager.setTitles(["滴滴", "滴答(未完成)", "哈罗(测试)"]);
+ui.viewpager.setTitles(["滴滴", "滴答(未完成)", "哈罗"]);
 //让滑动页面和标签栏联动
 ui.tabs.setupWithViewPager(ui.viewpager);
 

@@ -1,4 +1,3 @@
-
 // 市内 城际初始化
 function init_intercity() {
     intercity_config = {
@@ -58,9 +57,11 @@ function init_intercity() {
 function swipeTop() {
     swipe(device.width/2, Math.floor(device.height*0.6), device.width/2, Math.floor(device.height*0.9), 300)
 }
+
 function swipeDown() {
     swipe(device.width/2, Math.floor(device.height*0.8), device.width/2, Math.floor(device.height*0.5), 300)
 }
+
 // order_card_recycler
 function __checkTime(time, startTime, endTime) {
     console.log("time: %s", time)
@@ -90,98 +91,103 @@ function __checkTime(time, startTime, endTime) {
     }
 }
 
+/**
+ * @description: 字符串转数字
+ * @param {*} inputString
+ * @return {*}
+ */
 function extractNumbersAndDecimals(inputString) {
     const regex = /(\d+\.\d+|\d+)/g;
     const matches = inputString.match(regex);
     return matches;
 }
 
-
-function __checkDate(timestr) {
-    // 今天17:15
-    // 今天17:20-17:35
-    if (timestr.indexOf('-')) {
-        timestr = timestr.split('-')[0]
+/**
+ * @description: check时间日期
+ * @param {string} datestr 时间日期文本 e.g 今天 06:00~06:10
+ * @param {object} config 配置对象
+ * @return {boolean}
+ */
+function checkDate(datestr, config) {
+    // text("今天 06:00~06:10")
+    if ((datestr.slice(0,2) == '今天' && intercity_config.today) || 
+    (datestr.slice(0,2) == '明天' && intercity_config.tomorrow) ||
+    (datestr.slice(0,2) == '后天' && intercity_config.after_tomorrow)) {
+        datestr = datestr.slice(3);
+        let start_time = datestr.split('~')[0];
+        let end_time = datestr.split('~')[1];
+        if (!__checkTime(start_time, config.time_on, config.time_off)) return false;
+        if (end_time != undefined) {
+            if (!__checkTime(end_time, config.time_on, config.time_off)) return false;
+        }
     }
-    let check = false
-    switch (timestr.slice(0,2)) {
-        case '今天':
-            if (intercity_config.today) {
-                check = true
-                console.info('[check] 今天校验成功')
-            }
-            break;
-        case '明天':
-            if (intercity_config.tomorrow) {
-                check = true
-                console.info('[check] 明天校验成功')
-
-            }
-            break;
-        default:
-            if (intercity_config.after_tomorrow) {
-                console.info('[check] 明天以后校验成功')
-                check = true
-            }
-    }
-    if (!check) return false;
-    return __checkTime(timestr.slice(-5), intercity_config.time_on, intercity_config.time_off)
+    return true;
 }
 
-function __checkEndPointDistance(distancestr) {
-    let distance_now = Number(extractNumbersAndDecimals(distancestr)[0])
-    if (distance_now <= intercity_config.end_point) {
-        console.info('[check] 终点校验成功 %d <= %d', distance_now, intercity_config.end_point)
+/**
+ * @description: 
+ * @param {string} money 金额文本
+ * @param {object} config 配置对象
+ * @return {boolean}
+ */
+function checkMoney(money, config) {
+    if (Number(extractNumbersAndDecimals(money)) >= config.money_min && 
+    Number(extractNumbersAndDecimals(money) <= config.money_max)) {
         return true
     } else {
         return false
     }
 }
 
-function __checkMoney(moneystr) {
-    let moneystr_now = Number(extractNumbersAndDecimals(moneystr)[0])
-    if (moneystr_now >= intercity_config.money_min && moneystr_now <= intercity_config.money_max) {
-        console.info('[check] 金额校验成功 %d >= %d && <= %d', moneystr_now,intercity_config.money_min, intercity_config.money_max)
+/**
+ * @description: 
+ * @param {*} people 人数文本
+ * @param {*} config 配置对象
+ * @return {*}
+ */
+function checkPeople(people, config) {
+    if (Number(extractNumbersAndDecimals(people)) >= config.people_min &&
+        Number(extractNumbersAndDecimals(people)) <= config.people_max) {
+            return true
+        } else {
+            return false
+    }
+}
+
+/**
+ * @description: 
+ * @param {*} strarting 起点距离文本
+ * @param {*} config    配置对象
+ * @return {*}
+ */
+function checkStartingPoint(strarting, config) {
+    if (Number(extractNumbersAndDecimals(strarting)) <= config.starting_point) {
         return true
     } else {
         return false
     }
 }
 
-function __checkStartingPointDistance(starting_point) {
-    starting_point = Number(extractNumbersAndDecimals(starting_point)[0])
-    console.log("起点距离: %d", starting_point)
-    if (starting_point <= intercity_config.starting_point) {
-        console.info("[check] 起点距离校验成功 %d <= %d", starting_point, intercity_config.starting_point)
-        return true
-    } else {
-        return false
+/**
+ * @description: check所有参数
+ * @param {Array} para 采集的数据项目: 日期时间 金额 人数 起点距离 高速付费
+ * @param {Object} config
+ * @return {boolean}
+ */
+function checkAll (para, config) {
+    if (!checkDate(para[0], config)) return false;
+    console.log("[check] 时间check通过.");
+    if (!checkMoney(para[1], config)) return false;
+    console.log("[check] 金额check通过.");
+    if (!checkPeople(para[2], config)) return false;
+    console.log("[check] 人数check通过");
+    if (!checkStartingPoint(para[3], config)) return false;
+    console.log("[check] 起点距离check通过");
+    if (config.expressway) {
+        if (para[4] == null || para[4] == undefined) return false;
+        console.log("[check] 高速公路check通过");
     }
-}
-
-// 订单类型check 和人数
-function __checkTargetDistance(targetstr) {
-    // 人数类型
-    console.log("targetstr: %s", targetstr)
-    let headcount_now = Number(extractNumbersAndDecimals(targetstr)[0])
-    if (intercity_config.exclusive.state && targetstr.slice(0, 2) == '独享') {
-        console.log('[check] 独享校验成功')
-        if (headcount_now >= intercity_config.exclusive.people_min && 
-            headcount_now <= intercity_config.exclusive.people_max) {
-                console.info("[check] 人数校验成功 %d >= %d && <= %d", headcount_now, intercity_config.exclusive.people_min, intercity_config.exclusive.people_max)
-                return true
-            }
-    }
-    
-    if (intercity_config.carpooling.state && targetstr.slice(0, 2) == '拼座') {
-        console.log('[check] 拼座校验成功')
-        if (headcount_now >= intercity_config.carpooling.people_min &&
-            headcount_now <= intercity_config.carpooling.people_max) {
-                console.info("[check] 人数校验成功 %d >= %d && <= %d", headcount_now, intercity_config.carpooling.people_min, intercity_config.carpooling.people_max)
-                return true
-            }
-    }
-    return false
+    return true;
 }
 
 // 顺路cheuck
@@ -196,32 +202,28 @@ function __checkOnTheway(ontheway) {
 }
 
 
-
 // new 市内 城际 常用路线 发布形成
 function newIntercity(type) {
     let success = false;
+    let allcheck_stat = false;
     let ordersList = null;
     let errorCount = 0;
-    let refview = id("btnRefresh").findOnce();
-    if (!refview) {
-        console.log("找不到刷新按钮");
-        return
-    }
-    console.log("开始运行 展示配置信息");
+    let refview = null;
+    console.log("* -----------intercity_config------------");
     console.log(intercity_config);
+    console.log("* -----------intercity_config------------");
+
     // 开始便利
-    // id("tvDriverHighwayFee")
-    // text("愿与车主分摊高速费")
-    // id("simuAmountContainer")
     do {
         ordersList = id("rvMatchOrders").findOnce();
+        refview = id("btnRefresh").findOnce();
         if (!ordersList) {
-            console.log("找不到订单列表");
+            console.log("[!] 找不到订单列表");
             errorCount++;
         }
+        let targetChild = null;
         ordersList.children().forEach(function(child) {
-            if (!child) return;
-            
+            if (!child || allcheck_stat) return;
             try {
                 let dateview = child.child(0).child(0).child(0) || {text: ()=> {return 'null'}};
                 let distance = child.child(0).child(2).child(0).child(1).child(0) || {text: ()=> {return 'null'}};
@@ -229,32 +231,112 @@ function newIntercity(type) {
                 let otype = child.child(0).child(4).child(1) || {text: ()=> {return 'null'}};
                 let money = child.child(0).child(3).child(0).child(0) || {text: ()=> {return 'null'}};
                 let money2 = {text: ()=> {return 'null'}};
+                console.log("[*] 订单类型: " + otype.text())
                 if (otype.text() == '独享   拼座') {
                     money2 = child.child(0).child(3).child(1).child(0) || {text: ()=> {return 'null'}};
                 }
                 let expressway = child.findOne(id('tvDriverHighwayFee')) || {text: ()=> {return 'null'}};
-                console.log(dateview.text())
-                console.log(distance.text())
-                console.log(people.text())
-                console.log(otype.text())
-                console.log(money.text())
-                console.log(money2.text())
-                console.log(expressway.text())
-                
+
+                // 汇总所有数据
+                let all_data = [dateview.text(), 
+                    money.text(), 
+                    people.text(), 
+                    distance.text(),
+                expressway.text()];
+                console.log("* -----------all_data------------");
+                console.log(all_data);
+                console.log("* -----------all_data------------");
+                switch (otype.text()) {
+                    case '独享' || '独享   拼座':
+                        if (intercity_config.exclusive.state) {
+                            if (checkAll(all_data, intercity_config.exclusive
+                            )) {
+                                // 所有check通过
+                                allcheck_stat = true;
+                            }
+                        }
+                        break;
+                    case '拼座':
+                        if (intercity_config.exclusive.carpooling) {
+                            if (checkAll(all_data, intercity_config.carpooling
+                            )) {
+                                // 所有check通过
+                                allcheck_stat = true;
+                            }
+                        }
+                        break;
+                    case '拉货':
+                        if (intercity_config.exclusive.pullgoods) {
+                            if (checkAll(all_data, intercity_config.pullgoods
+                            )) {
+                                // 所有check通过
+                                allcheck_stat = true;
+                            }
+                        }
+                        break;
+                }
+                if (allcheck_stat) {
+                    targetChild = child;
+                }
+
             } catch (error) {
-                console.log(error);
+                console.log('[!] '+ error);
                 errorCount++;
             }
         });
-        break;
+        
+        if (allcheck_stat && targetChild != null) {
+            // 开始抢单
+            let do_count = 0;
+            console.log("[>] 进入订单详情");
+            do {
+                targetChild.click()
+                do_count++
+            } while (!id("rtvTitle").exists() && do_count < 500);
+            console.log("[>] 确认同行/立即抢单");
+
+            do_count = 0;
+            do {
+                let tvButton = text("确认同行").id("tvButton").findOnce() || text("立即抢单").id("tvButton").findOnce();
+                if (tvButton) {
+                    success = true;
+                    tvButton.click();
+                } else {
+                    // 
+                    let tvConfirm = id("tvConfirm").text("知道了，确认同行").findOnce();
+                    if (tvConfirm) tvConfirm.click();
+                }
+            } while (!text("请选择到达乘客起点的时间").exists() && do_count < 500);
+            console.log("[>] 确定（开始识别人脸）");
+
+            do_count = 0;
+            do {
+                let tvPickerSure = id("tvPickerSure").text("确定").findOnce();
+                if (tvPickerSure) {
+                    // success = true;
+                    tvPickerSure.click();
+                }
+            } while (!id("wbcf_live_tip_tv").exists() && do_count < 500);
+            break;
+        } else {
+            // 刷新 id("btnRefresh")
+            if (refview) {
+                if (refview.click()) {
+                    sleep(random(intercity_config.refresh_on, intercity_config.refresh_off));
+                    console.log("[>] 刷新完成");
+                }
+            }
+        }
+        // break;
+
     }while(!success || errorCount < 100);
 
-    console.log('接单成功')
+    console.log('[>] 接单成功')
     console._play_music()
 }
 
 function intercity() {
-    console.log("开始执行市内单子");
+    console.log("[>] 开始执行市内单子");
     newIntercity(1)
 }
 
