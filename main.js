@@ -23,8 +23,7 @@ console._dida_intercity_id = function (id) {
 
 console._play_music = function () {
     threads.start(function() {
-        media.playMusic("./mydir/yalangdisco.mp3");
-        // sleep(media.getMusicDuration());
+        media.playMusic("./mydir/yalangdisco.mp3")
     })
 }
 
@@ -135,7 +134,6 @@ const ui_didi = require('ui_didi.js')
 const ui_halo = require('ui_halo.js')
 
 const ui_dida = require('ui_dida.js')
-
 
 const user = require('user.js')
 ui.statusBarColor("#b2b2b2");
