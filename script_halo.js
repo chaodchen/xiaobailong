@@ -111,6 +111,74 @@ function init_crossCity() {
     console.log(intercity_config)
 }
 
+// 发布行程初始化
+function init_pushOrder() {
+    intercity_config = {
+        refresh_on : Number(console._storage.get(console._halo_id('crossCity-refresh-on'))),
+        refresh_off : Number(console._storage.get(console._halo_id('crossCity-refresh-off'))),
+
+        today : console._storage.get(console._halo_id('crossCity-today')),
+        tomorrow : console._storage.get(console._halo_id('crossCity-tomorrow')),
+        after_tomorrow : console._storage.get(console._halo_id('crossCity-otherday')),
+        expressway : console._storage.get(console._halo_id('crossCity-expressway')),
+        
+        exclusive : {
+            state: console._storage.get(console._halo_id('crossCity-exclusive')),
+            people_min: Number(console._storage.get(console._halo_id('crossCity-exclusive-people-min'))),
+            people_max: Number(console._storage.get(console._halo_id('crossCity-exclusive-people-max'))),
+            time_on: console._storage.get(console._halo_id('crossCity-exclusive-time-on')),
+            time_off: console._storage.get(console._halo_id('crossCity-exclusive-time-off')),
+            money_min : Number(console._storage.get(console._halo_id('crossCity-exclusive-money-min'))),
+            money_max : Number(console._storage.get(console._halo_id('crossCity-exclusive-money-max'))),
+            starting_point : Number(console._storage.get(console._halo_id('crossCity-exclusive-starting-point'))),
+            end_point : Number(console._storage.get(console._halo_id('crossCity-exclusive-end-point'))),
+            along_way : Number(console._storage.get(console._halo_id('crossCity-exclusive-along-way'))),
+
+        },
+        carpooling: {
+            state: console._storage.get(console._halo_id('crossCity-carpooling')),
+            people_min: Number(console._storage.get(console._halo_id('crossCity-carpooling-people-min'))),
+            people_max: Number(console._storage.get(console._halo_id('crossCity-carpooling-people-max'))),
+            time_on: console._storage.get(console._halo_id('crossCity-carpooling-time-on')),
+            time_off: console._storage.get(console._halo_id('crossCity-carpooling-time-off')),
+            money_min : Number(console._storage.get(console._halo_id('crossCity-carpooling-money-min'))),
+            money_max : Number(console._storage.get(console._halo_id('crossCity-carpooling-money-max'))),
+            starting_point : Number(console._storage.get(console._halo_id('crossCity-carpooling-starting-point'))),
+            end_point : Number(console._storage.get(console._halo_id('crossCity-carpooling-end-point'))),
+            along_way : Number(console._storage.get(console._halo_id('crossCity-carpooling-along-way'))),
+            
+        },
+        comfort: {
+            state: console._storage.get(console._halo_id('crossCity-comfort')),
+            people_min: Number(console._storage.get(console._halo_id('crossCity-comfort-people-min'))),
+            people_max: Number(console._storage.get(console._halo_id('crossCity-comfort-people-max'))),
+            time_on: console._storage.get(console._halo_id('crossCity-comfort-time-on')),
+            time_off: console._storage.get(console._halo_id('crossCity-comfort-time-off')),
+            money_min : Number(console._storage.get(console._halo_id('crossCity-comfort-money-min'))),
+            money_max : Number(console._storage.get(console._halo_id('crossCity-comfort-money-max'))),
+            starting_point : Number(console._storage.get(console._halo_id('crossCity-comfort-starting-point'))),
+            end_point : Number(console._storage.get(console._halo_id('crossCity-comfort-end-point'))),
+            along_way : Number(console._storage.get(console._halo_id('crossCity-comfort-along-way'))),
+
+
+        },
+        pullgoods: {
+            state: console._storage.get(console._halo_id('crossCity-pullgoods')),
+            people_min: Number(console._storage.get(console._halo_id('crossCity-pullgoods-people-min'))),
+            people_max: Number(console._storage.get(console._halo_id('crossCity-pullgoods-people-max'))),
+            time_on: console._storage.get(console._halo_id('crossCity-pullgoods-time-on')),
+            time_off: console._storage.get(console._halo_id('crossCity-pullgoods-time-off')),
+            money_min : Number(console._storage.get(console._halo_id('crossCity-pullgoods-money-min'))),
+            money_max : Number(console._storage.get(console._halo_id('crossCity-pullgoods-money-max'))),
+            starting_point : Number(console._storage.get(console._halo_id('crossCity-pullgoods-starting-point'))),
+            end_point : Number(console._storage.get(console._halo_id('crossCity-pullgoods-end-point'))),
+            along_way : Number(console._storage.get(console._halo_id('crossCity-pullgoods-along-way'))),
+        },
+    }
+    console.log(intercity_config)
+}
+
+
 function swipeTop() {
     swipe(device.width/2, Math.floor(device.height*0.6), device.width/2, Math.floor(device.height*0.9), 300)
 }
@@ -402,10 +470,57 @@ function crossCity() {
     newIntercity(1);
 }
 
+function pushOrder () {
+    function refresh2 () {
+        let bt1 = id('tvFilterName').text('智能排序').findOnce()
+        if (!bt1) return;
+        bt1.parent().click()
+        while (id('tvName').text('智能排序').exists()) {
+            let bt2 = id('tvName').text('智能排序').findOnce()
+            if (bt2) {
+                bt2.parent().click()
+            }
+        }
+    }
+    
+    console.log("[>] 开始执行发布行程单子");
+    // newIntercity(2);
+    let pushOrderListView = id('orderRecycler').findOne(3 * 1000);
+    if (!pushOrderListView || pushOrderListView.childCount() > 2) {
+        console.log("[!] 没有找到发布行程列表");
+        return;
+    }
+    
+    for (let itemIndex = 1; itemIndex < pushOrder.childCount(); itemIndex++) {
+        let item = pushOrderListView.child(itemIndex);
+        if (!item) continue;
+        // 开始采集数据
+        let alongTheWay_Text = item.child(0).child(0).child(0);
+        let data_Text = item.child(0).child(0).child(1);
+        let startingPoint_Text = item.child(0).child(2).child(0).child(1).child(0);
+        let endPoint_Text = item.child(0).child(2).child(1).child(1).child(1).child(1);
+        let numberOfPeople_Text = item.child(0).child(4).child(1);
+        let money_Text = item.child(0).child(3).child(0).child(0);
+        let driverPooling_Text = item.child(0).child(3).child(0).child(0);
+
+        
+        console.log(alongTheWay_Text.text());
+        console.log(data_Text.text());
+        console.log(startingPoint_Text.text());
+        console.log(endPoint_Text.text());
+        console.log(numberOfPeople_Text.text());
+        console.log(money_Text.text());
+        console.log(driverPooling_Text.text());
+    }
+    
+}
+
 
 module.exports = {
     init_intercity : init_intercity,
     intercity : intercity,
     init_crossCity : init_crossCity,
-    crossCity : crossCity
+    crossCity : crossCity,
+    init_pushOrder : init_pushOrder,
+    pushOrder : pushOrder,
 }
