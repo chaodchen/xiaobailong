@@ -17,8 +17,8 @@ console._halo_id = function (id) {
     return 'halo_' + id
 }
 
-console._dida_intercity_id = function (id) {
-    return 'dida_intercity_' + id
+console._dida_id = function (id) {
+    return 'dida_' + id
 }
 
 console._play_music = function () {
@@ -151,10 +151,8 @@ ui.layout(
                 </ScrollView>
             </frame>
             <frame>
-                <ScrollView>
-                    <vertical h='*' id='layout_dida'>
-                    </vertical>
-                </ScrollView>
+                <vertical h='*' id='layout_dida'>
+                </vertical>
             </frame>
             <frame>
                 <vertical h='*' id='layout_halo'>
@@ -190,7 +188,7 @@ ui.emitter.on("options_item_selected", (e, item)=>{
 activity.setSupportActionBar(ui.toolbar);
 
 //设置滑动页面的标题
-ui.viewpager.setTitles(["滴滴", "滴答(未完成)", "哈罗"]);
+ui.viewpager.setTitles(["滴滴", "滴答", "哈罗"]);
 //让滑动页面和标签栏联动
 ui.tabs.setupWithViewPager(ui.viewpager);
 
