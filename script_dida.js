@@ -302,8 +302,10 @@ function waitWorkActivity() {
         if (intercity_config.intercity_goods || intercity_config.crosscity_goods) {
             let intercityTab = null
             if (intercity_config.intercity_goods) {
+                // 市内
                 intercityTab = id(idfix+'ivTitleInnerCity').findOnce()
             } else if (intercity_config.crosscity_goods) {
+                // 城际
                 intercityTab = id(idfix+'ivTitleInterCity').findOnce()
             }
             if (!intercityTab) continue
