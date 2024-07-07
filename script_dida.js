@@ -1,4 +1,3 @@
-
 let exclusive_or_carpooling = 0
 
 let tabs = []
@@ -12,49 +11,79 @@ let intercity_config = null
 // 市内 城际初始化
 function init_intercity() {
     intercity_config = {
-        intercity_goods: console._storage.get(console._dida_intercity_id('intercity-goods')),
-        crosscity_goods: console._storage.get(console._dida_intercity_id('crosscity-goods')),
-        common_route_goods: console._storage.get(console._dida_intercity_id('common-route-goods')),
-        publish_itinerary: console._storage.get(console._dida_intercity_id('publish_itinerary')),
+        intercity_goods : true,
+        crosscity_goods : false,
+        refresh_on : Number(console._storage.get(console._dida_id('city-refresh-on'))),
+        refresh_off : Number(console._storage.get(console._dida_id('city-refresh-off'))),
 
-
-        refresh_on : Number(console._storage.get(console._dida_intercity_id('refresh-on'))),
-        refresh_off : Number(console._storage.get(console._dida_intercity_id('refresh-off'))),
-
-        today : console._storage.get(console._dida_intercity_id('today')),
-        tomorrow : console._storage.get(console._dida_intercity_id('tomorrow')),
-        after_tomorrow : console._storage.get(console._dida_intercity_id('after-tomorrow')),
-
-        exclusive_money_min : Number(console._storage.get(console._dida_intercity_id('exclusive-money-min'))),
-        exclusive_money_max : Number(console._storage.get(console._dida_intercity_id('exclusive-money-max'))),
-        exclusive_starting_point : Number(console._storage.get(console._dida_intercity_id('exclusive-starting-point'))),
-        exclusive_time_on: console._storage.get(console._dida_intercity_id('exclusive-time-on')),
-        exclusive_time_off: console._storage.get(console._dida_intercity_id('exclusive-time-off')),
-        exclusive_on_theway_percentage : Number(console._storage.get(console._dida_intercity_id('exclusive-on-theway-percentage'))),
-        exclusive_end_point : Number(console._storage.get(console._dida_intercity_id('exclusive-end-point'))),
-        
-        carpooling_money_min : Number(console._storage.get(console._dida_intercity_id('carpooling-money-min'))),
-        carpooling_money_max : Number(console._storage.get(console._dida_intercity_id('carpooling-money-max'))),
-        carpooling_starting_point : Number(console._storage.get(console._dida_intercity_id('carpooling-starting-point'))),
-        carpooling_time_on: console._storage.get(console._dida_intercity_id('carpooling-time-on')),
-        carpooling_time_off: console._storage.get(console._dida_intercity_id('carpooling-time-off')),
-        carpooling_on_theway_percentage : Number(console._storage.get(console._dida_intercity_id('carpooling-on-theway-percentage'))),
-        carpooling_end_point : Number(console._storage.get(console._dida_intercity_id('carpooling-end-point'))),
+        today : console._storage.get(console._dida_id('city-today')),
+        tomorrow : console._storage.get(console._dida_id('city-tomorrow')),
+        after_tomorrow : console._storage.get(console._dida_id('city-otherday')),
+        expressway : console._storage.get(console._dida_id('city-expressway')),
 
         exclusive : {
-            state: console._storage.get(console._dida_intercity_id('exclusive')),
-            people_min: Number(console._storage.get(console._dida_intercity_id('people-exclusive-min'))),
-            people_max: Number(console._storage.get(console._dida_intercity_id('people-exclusive-max')))
+            state: console._storage.get(console._dida_id('city-exclusive')),
+            people_min: Number(console._storage.get(console._dida_id('city-exclusive-people-min'))),
+            people_max: Number(console._storage.get(console._dida_id('city-exclusive-people-max'))),
+            time_on: console._storage.get(console._dida_id('city-exclusive-time-on')),
+            time_off: console._storage.get(console._dida_id('city-exclusive-time-off')),
+            money_min : Number(console._storage.get(console._dida_id('city-exclusive-money-min'))),
+            money_max : Number(console._storage.get(console._dida_id('city-exclusive-money-max'))),
+            starting_point : Number(console._storage.get(console._dida_id('city-exclusive-starting-point'))),
         },
         carpooling: {
-            state: console._storage.get(console._dida_intercity_id('carpooling')),
-            people_min: Number(console._storage.get(console._dida_intercity_id('people-carpooling-min'))),
-            people_max: Number(console._storage.get(console._dida_intercity_id('people-carpooling-max')))
+            state: console._storage.get(console._dida_id('city-carpooling')),
+            people_min: Number(console._storage.get(console._dida_id('city-carpooling-people-min'))),
+            people_max: Number(console._storage.get(console._dida_id('city-carpooling-people-max'))),
+            time_on: console._storage.get(console._dida_id('city-carpooling-time-on')),
+            time_off: console._storage.get(console._dida_id('city-carpooling-time-off')),
+            money_min : Number(console._storage.get(console._dida_id('city-carpooling-money-min'))),
+            money_max : Number(console._storage.get(console._dida_id('city-carpooling-money-max'))),
+            starting_point : Number(console._storage.get(console._dida_id('city-carpooling-starting-point'))),
         },
         
     }
     console.log(intercity_config)
 }
+
+
+function init_crosscity() {
+    intercity_config = {
+        intercity_goods : false,
+        crosscity_goods : true,
+        refresh_on : Number(console._storage.get(console._dida_id('crossCity-refresh-on'))),
+        refresh_off : Number(console._storage.get(console._dida_id('crossCity-refresh-off'))),
+
+        today : console._storage.get(console._dida_id('crossCity-today')),
+        tomorrow : console._storage.get(console._dida_id('crossCity-tomorrow')),
+        after_tomorrow : console._storage.get(console._dida_id('crossCity-otherday')),
+        expressway : console._storage.get(console._dida_id('crossCity-expressway')),
+
+        exclusive : {
+            state: console._storage.get(console._dida_id('crossCity-exclusive')),
+            people_min: Number(console._storage.get(console._dida_id('crossCity-exclusive-people-min'))),
+            people_max: Number(console._storage.get(console._dida_id('crossCity-exclusive-people-max'))),
+            time_on: console._storage.get(console._dida_id('crossCity-exclusive-time-on')),
+            time_off: console._storage.get(console._dida_id('crossCity-exclusive-time-off')),
+            money_min : Number(console._storage.get(console._dida_id('crossCity-exclusive-money-min'))),
+            money_max : Number(console._storage.get(console._dida_id('crossCity-exclusive-money-max'))),
+            starting_point : Number(console._storage.get(console._dida_id('crossCity-exclusive-starting-point'))),
+        },
+        carpooling: {
+            state: console._storage.get(console._dida_id('crossCity-carpooling')),
+            people_min: Number(console._storage.get(console._dida_id('crossCity-carpooling-people-min'))),
+            people_max: Number(console._storage.get(console._dida_id('crossCity-carpooling-people-max'))),
+            time_on: console._storage.get(console._dida_id('crossCity-carpooling-time-on')),
+            time_off: console._storage.get(console._dida_id('crossCity-carpooling-time-off')),
+            money_min : Number(console._storage.get(console._dida_id('crossCity-carpooling-money-min'))),
+            money_max : Number(console._storage.get(console._dida_id('crossCity-carpooling-money-max'))),
+            starting_point : Number(console._storage.get(console._dida_id('crossCity-carpooling-starting-point'))),
+        },
+        
+    }
+    console.log(intercity_config)
+}
+
 
 function swipeTop() {
     swipe(device.width/2, Math.floor(device.height*0.5), device.width/2, Math.floor(device.height*0.9), 500)
@@ -100,10 +129,10 @@ function extractNumbersAndDecimals(inputString) {
 
 
 function __checkDate(timestr) {
-    // 今天17:15
-    // 今天17:20-17:35
-    if (timestr.indexOf('-')) {
-        timestr = timestr.split('-')[0]
+    // 今天16:20前 随时可走
+    // 今天16:15 - 16:35
+    if (timestr.indexOf(' ')) {
+        timestr = timestr.split(' ')[0]
     }
     let check = false
     switch (timestr.slice(0,2)) {
@@ -128,49 +157,30 @@ function __checkDate(timestr) {
     }
     if (!check) return false;
     if (exclusive_or_carpooling == 0) {
-        return __checkTime(timestr.slice(-5), intercity_config.exclusive_time_on, intercity_config.exclusive_time_off)
+        return __checkTime(timestr.slice(2, 7), intercity_config.exclusive.time_on, intercity_config.exclusive.time_off)
     } else {
-        return __checkTime(timestr.slice(-5), intercity_config.carpooling_time_on, intercity_config.carpooling_time_off)
+        return __checkTime(timestr.slice(2, 7), intercity_config.carpooling.time_on, intercity_config.carpooling.time_off)
 
     }
 }
 
-function __checkEndPointDistance(distancestr) {
-    let distance_now = Number(extractNumbersAndDecimals(distancestr)[0])
-    if (exclusive_or_carpooling == 0) {
-        if (distance_now <= intercity_config.exclusive_end_point) {
-            console.info('[check] 终点校验成功 %d <= %d', distance_now, intercity_config.exclusive_end_point)
-            return true
-        } else {
-            return false
-        }
-    } else {
-        if (distance_now <= intercity_config.carpooling_end_point) {
-            console.info('[check] 终点校验成功 %d <= %d', distance_now, intercity_config.carpooling_end_point)
-            return true
-        } else {
-            return false
-        }
-    }
-
-}
 
 function __checkMoney(moneystr) {
     let moneystr_now = Number(extractNumbersAndDecimals(moneystr))
     if (exclusive_or_carpooling == 0) {
-        if (moneystr_now >= intercity_config.exclusive_money_min && moneystr_now <= intercity_config.exclusive_money_max) {
-            console.info('[check] 金额校验成功 %d >= %d && <= %d', moneystr_now,intercity_config.exclusive_money_min, intercity_config.exclusive_money_max)
+        if (moneystr_now >= intercity_config.exclusive.money_min && moneystr_now <= intercity_config.exclusive.money_max) {
+            console.info('[check] 金额校验成功 %d >= %d && <= %d', moneystr_now,intercity_config.exclusive.money_min, intercity_config.exclusive.money_max)
             return true
         } else {
-            console.info('[check] 金额校验失败 %d >= %d && <= %d', moneystr_now,intercity_config.exclusive_money_min, intercity_config.exclusive_money_max)
+            console.info('[check] 金额校验失败 %d >= %d && <= %d', moneystr_now,intercity_config.exclusive.money_min, intercity_config.exclusive.money_max)
             return false
         }
     } else {
-        if (moneystr_now >= intercity_config.carpooling_money_min && moneystr_now <= intercity_config.carpooling_money_max) {
-            console.info('[check] 金额校验成功 %d >= %d && <= %d', moneystr_now,intercity_config.carpooling_money_min, intercity_config.carpooling_money_max)
+        if (moneystr_now >= intercity_config.carpooling.money_min && moneystr_now <= intercity_config.carpooling.money_max) {
+            console.info('[check] 金额校验成功 %d >= %d && <= %d', moneystr_now,intercity_config.carpooling.money_min, intercity_config.carpooling.money_max)
             return true
         } else {
-            console.info('[check] 金额校验失败 %d >= %d && <= %d', moneystr_now,intercity_config.carpooling_money_min, intercity_config.carpooling_money_max)
+            console.info('[check] 金额校验失败 %d >= %d && <= %d', moneystr_now,intercity_config.carpooling.money_min, intercity_config.carpooling.money_max)
             return false
         }
     }
@@ -181,15 +191,15 @@ function __checkStartingPointDistance(starting_point) {
     starting_point = Number(extractNumbersAndDecimals(starting_point))
     console.log("起点距离: %d", starting_point)
     if (exclusive_or_carpooling == 0) {
-        if (starting_point <= intercity_config.exclusive_starting_point) {
-            console.info("[check] 起点距离校验成功 %d <= %d", starting_point, intercity_config.exclusive_starting_point)
+        if (starting_point <= intercity_config.exclusive.starting_point) {
+            console.info("[check] 起点距离校验成功 %d <= %d", starting_point, intercity_config.exclusive.starting_point)
             return true
         } else {
             return false
         }
     } else {
-        if (starting_point <= intercity_config.carpooling_starting_point) {
-            console.info("[check] 起点距离校验成功 %d <= %d", starting_point, intercity_config.carpooling_starting_point)
+        if (starting_point <= intercity_config.carpooling.starting_point) {
+            console.info("[check] 起点距离校验成功 %d <= %d", starting_point, intercity_config.carpooling.starting_point)
             return true
         } else {
             return false
@@ -200,13 +210,10 @@ function __checkStartingPointDistance(starting_point) {
 
 // check人数
 function __checkTargetDistance(targetstr) {
-    // 人数类型
-    console.log("targetstr: %s", targetstr)
-    let headcount_now = Number(extractNumbersAndDecimals(targetstr)[0])
-    // 总里程
-    let distance_now = extractNumbersAndDecimals(targetstr)[1]
+    console.log("[*] targetstr: %s", targetstr)
+    let headcount_now = Number(extractNumbersAndDecimals(targetstr))
     if (intercity_config.exclusive.state && exclusive_or_carpooling == 0) {
-        console.log('[check] 独享校验成功')
+        console.log('[*] 独享校验成功')
         if (headcount_now >= intercity_config.exclusive.people_min && 
             headcount_now <= intercity_config.exclusive.people_max) {
                 console.info("[check] 人数校验成功 %d >= %d && <= %d", headcount_now, intercity_config.exclusive.people_min, intercity_config.exclusive.people_max)
@@ -215,82 +222,86 @@ function __checkTargetDistance(targetstr) {
     }
     
     if (intercity_config.carpooling.state && exclusive_or_carpooling == 1) {
-        console.log('[check] 愿拼校验成功')
+        console.log('[*] 愿拼校验成功')
         if (headcount_now >= intercity_config.carpooling.people_min &&
             headcount_now <= intercity_config.carpooling.people_max) {
-                console.info("[check] 人数校验成功 %d >= %d && <= %d", headcount_now, intercity_config.carpooling.people_min, intercity_config.carpooling.people_max)
+                console.info("[*] 人数校验成功 %d >= %d && <= %d", headcount_now, intercity_config.carpooling.people_min, intercity_config.carpooling.people_max)
                 return true
             }
     }
     return false
 }
 
-// 顺路cheuck
-function __checkOnTheway(ontheway) {
-    console.log("ontheway: " + ontheway)
-    ontheway = Number(extractNumbersAndDecimals(ontheway)[0])
-    if (exclusive_or_carpooling == 0) {
-        if (ontheway >= intercity_config.exclusive_on_theway_percentage) {
-            console.log('[check] 顺路校验成功 %d >= %d', ontheway, intercity_config.exclusive_on_theway_percentage)
-            return true
-        } else {
-            return false
-        }
-    } else {
-        if (ontheway >= intercity_config.carpooling_on_theway_percentage) {
-            console.log('[check] 顺路校验成功 %d >= %d', ontheway, intercity_config.carpooling_on_theway_percentage)
-            return true
-        } else {
-            return false
-        }
-    }
-
-}
 
 // 获取订单列表
 function getItemList() {
     let result_array = []
-    let goodListViwe = id(idfix+'order_card_recycler').findOne(3 * 1000)
+    let goodListViwe = id(idfix+'rvContent').findOne(3 * 1000)
     if (goodListViwe == null) return result_array;
+    let cap = captureScreen();
     goodListViwe.children().forEach(function(child, index) {
         if (child == null) return;
+        if (child.className() != 'android.view.ViewGroup') return;
+        if (child.child(0).className() == 'android.view.ViewGroup') return;
+        if (child.bounds().bottom > device.height*0.9) return;
         let result = {}
+        console.log("第" + (index+1) + "项采集.")
         try {
-            if (global_type == 2) {
+            if (intercity_config.intercity_goods || 
+                intercity_config.crosscity_goods) {
                 // 顺路
-                result.ontheway = child.child(0).child(0).child(0).text()
+                result.ontheway = null
                 // 时间     
-                result.date = child.child(0).child(0).child(1).text()
+                result.date = child.findOne(id("startTimeAndNum")).text()
                 // 终点距离
-                result.distance_of_end = child.child(0).child(1).child(6).text()
-            } else if (global_type == 1) {
-                if (intercity_config.intercity_goods || 
-                    intercity_config.crosscity_goods) {
-                    // 顺路
-                    result.ontheway = null
-                    // 时间     
-                    result.date = child.child(0).child(0).child(0).text()
-                    // 终点距离
-                    result.distance_of_end = null
-                } else if (intercity_config.common_route_goods) {
-                    // 顺路
-                    result.ontheway = child.child(0).child(0).child(0).text()
-                    // 时间     
-                    result.date = child.child(0).child(0).child(1).text()
-                    // 终点距离
-                    result.distance_of_end = child.child(0).child(1).child(6).text()
-                }
+                result.distance_of_end = null
             }
             // 起点距离
-            result.distance_of_start = child.child(0).child(1).child(2).text()
-            // 独享、订单里程
-            result.type_and_mileage =  child.child(0).child(5).child(0).child(0).text()
+            if (intercity_config.intercity_goods) {
+                result.distance_of_start = child.findOne(id('tvStartInnerDistance')).text()
+            } else if (intercity_config.crosscity_goods) {
+                result.distance_of_start = child.findOne(id('tvStartInterDistance')).text()
+            }
             // 金额
-            result.gold = child.child(0).child(3).child(0).child(0).text()
+            let goldview = child.findOne(id("llPrice"))
+            let typeview = child.findOne(id("ivRemark"))
+
+            let ocr_temp_img = images.clip(cap, goldview.bounds().left, goldview.bounds().top, goldview.bounds().width(), goldview.bounds().height())
+            let ocr_text_gold = gmlkit.ocr(ocr_temp_img, 'zh');
+            if (ocr_text_gold) {
+                result.gold = ocr_text_gold.text
+            }
+            ocr_temp_img.recycle()
+            ocr_temp_img = null
+
+            ocr_temp_img = images.clip(cap, typeview.bounds().left, typeview.bounds().top, typeview.bounds().width(), typeview.bounds().height())
+            let ocr_text_type = gmlkit.ocr(images.clip(cap, typeview.bounds().left, typeview.bounds().top, typeview.bounds().width(), typeview.bounds().height()), 'zh');
+            if (ocr_text_type) {
+                result.type = ocr_text_type.text
+            }
+            ocr_temp_img.recycle()
+            cap.recycle()
+            cap = null
+
+            let all_tag_layout = child.findOne(id("rvRemarks"))
+            if (all_tag_layout) {
+                result.people_count = all_tag_layout.child(1).child(0).text()  // 第一个一定是人数
+                if (all_tag_layout.childCount() > 2) {
+                    try {
+                        result.ispay = all_tag_layout.child(2).child(0).text()         // 不一定出现已支付
+                    } catch (e) {
+                        result.ispay = null
+                    }
+                } else {
+                    result.ispay = null
+                }
+            }
             // 发送按钮
-            result.send_button = send_button = child.child(0).child(8)
+            result.send_button = child
         } catch (err) {
             result = null
+            console.error(err)
+            console.error("[!] 列表信息采集错误")
         }
         result_array.push(result)
     })
@@ -298,24 +309,29 @@ function getItemList() {
 }
 
 function waitWorkActivity() {
-    for(;;) {
+    console.log("[*] 开始初始化ui.")
+    for (;;) {
+        let tvMore = id(idfix+"tvMore").text("更多").findOne(1 * 1000)
+        if (!tvMore || !tvMore.click()) continue;
+        
         if (intercity_config.intercity_goods || intercity_config.crosscity_goods) {
             let intercityTab = null
             if (intercity_config.intercity_goods) {
                 // 市内
-                intercityTab = id(idfix+'ivTitleInnerCity').findOnce()
+                intercityTab = id(idfix+'ivTitleInnerCity').findOne(1 * 1000)
             } else if (intercity_config.crosscity_goods) {
                 // 城际
-                intercityTab = id(idfix+'ivTitleInterCity').findOnce()
+                intercityTab = id(idfix+'ivTitleInterCity').findOne(1 * 1000)
             }
-            if (!intercityTab) continue
-            if (intercityTab.click()) break
+            if (!intercityTab) continue;
+            intercityTab.click();
+    
         } else if (intercity_config.common_route_goods) {
             
-        } else if (intercity_config.publish_itinerary) {
-
         }
+        break
     }
+    console.log("[*] dida抢单初始化完成.")
 }
 
 function initOtherThreads() {
@@ -335,102 +351,37 @@ function initOtherThreads() {
 
 function refresh() {
     try {
-        if (global_type == 1) {
-            if (intercity_config.intercity_goods) {
-                if (intercity_config.switch_sort) {
-                    // 切换刷新
-                    if (refresh_view[0].bt1.click()) {
-                        sleep(500)
-                        let x = refresh_view[0].bt1.bounds().centerX()
-                        let y = refresh_view[0].bt1.bounds().centerY() + Math.floor((device.width / 1080 ) * 140)
-                        click(x, y)
-                    }
-                } else if (intercity_config.thirty_minute) {
-                    // 3分钟
-                    refresh_view[0].bt2.click()
-                }
-            } else if (intercity_config.crosscity_goods) {
-                if (intercity_config.switch_sort2) {
-                    // 切换刷新
-                    if (refresh_view[1].bt1.click()) {
-                        sleep(300)
-                        let x = refresh_view[1].bt1.bounds().centerX()
-                        let y = refresh_view[1].bt1.bounds().centerY() + Math.floor((device.width / 1080 ) * 140)
-                        click(x, y)
-                    }
-                } else if (intercity_config.paid) {
-                    // 已支付
-                    refresh_view[1].bt2.click()
-                }
-            } else if (intercity_config.common_route_goods) {
-                if (!refresh_view[2].list1) return false
-                if (intercity_config.only_ref) {
-                    // if (rvlist.childCount() < 2) return;
-                    if (!refresh_view[2].list1.child(0).click()) return;
-                } else if (intercity_config.two_ref) {
-                    // if (rvlist.childCount() < 3) return;
-                    if (!refresh_view[2].list1.child(1).click()) return;
-                    if (!refresh_view[2].list1.child(0).click()) return;
-                }
-            }
-        } else if (global_type == 2) {
-            if (intercity_config.swipe_ref) {               // 下拉刷新
-                swipeTop()
-            } else if (intercity_config.switch_ref) {       // 切换刷新
-                if (refresh_view[3].bt1.click()) {
-                    sleep(1)
-                    while(!refresh_view[3].bt2.click());
-                }
-            }
+        if (intercity_config.intercity_goods || intercity_config.crosscity_goods) {
+            refresh_view[0].bt1.click() == true ? console.log("[*] 刷新成功.") : console.error("[!] 刷新失败.");
         }
     } catch (e) {
-        console.error(e)
-        console.error('刷新失败')
+        console.error(e + '\n[!] 刷新错误.')
         return false
-
     }
     return true
 }
 
 function initRefreshViews() {
-    if (global_type == 1) {
-        if (intercity_config.intercity_goods) {
-            refresh_view[0].bt1 = id(idfix+'tv_filter_name').text('智能排序').findOnce()
-            if (!refresh_view[0].bt1) refresh_view[0].bt1 = id(idfix+'tv_filter_name').text('出发时间-从早到晚').findOnce()
-            if (!refresh_view[0].bt1) refresh_view[0].bt1 = id(idfix+'tv_filter_name').text('订单价格-从高到低').findOnce()
-            if (!refresh_view[0].bt1) refresh_view[0].bt1 = id(idfix+'tv_filter_name').text('接驾距离-从近到远').findOnce()
-            refresh_view[0].bt2 = id(idfix+"bt_refresh").findOnce()
-            if (!refresh_view[0].bt2 || !refresh_view[0].bt1) return false
-        } else if (intercity_config.crosscity_goods) {
-            refresh_view[1].bt1 = id(idfix+'tv_filter_name').text('智能排序').findOnce()
-            if (!refresh_view[1].bt1) refresh_view[1].bt1 = id(idfix+'tv_filter_name').text('出发时间-从早到晚').findOnce()
-            if (!refresh_view[1].bt1) refresh_view[1].bt1 = id(idfix+'tv_filter_name').text('订单价格-从高到低').findOnce()
-            if (!refresh_view[1].bt1) refresh_view[1].bt1 = id(idfix+'tv_filter_name').text('接驾距离-从近到远').findOnce()
-            refresh_view[1].bt2 = id(idfix+"bt_refresh").findOnce()
-            if (!refresh_view[1].bt2 || !refresh_view[1].bt1) return false
-        } else if (intercity_config.common_route_goods) {
-            refresh_view[2].list1 = id(idfix+'rv_route_list').findOnce()
-            if (refresh_view[2].list1 == null) return false
+    if (intercity_config.intercity_goods || intercity_config.crosscity_goods) {
+        refresh_view[0].bt1 = id(idfix+"iv_bottom_update").findOne(3 * 1000)
+        if (!refresh_view[0].bt1) {
+            return false;
         }
-    } else if (global_type == 2) {
-        refresh_view[3].bt1 = id(idfix+'sfc_drv_wait_sort_button').text(tabs[1]).findOnce()
-        refresh_view[3].bt2 = id(idfix+'sfc_drv_wait_sort_button').text(tabs[0]).findOnce()
-        if (!refresh_view[3].bt2 || !refresh_view[3].bt1) return false
     }
     return true
 }
 
 function checkItem(item) {
     // 独享还是拼单
-    if (item.type_and_mileage.slice(2, 4) == '独享' && intercity_config.exclusive.state) {
+    if (item.type.indexOf('独享') > -1 && intercity_config.exclusive.state) {
         exclusive_or_carpooling = 0
-    } else if (item.type_and_mileage.slice(2, 4) == '愿拼' && intercity_config.carpooling.state) {
+    } else if (intercity_config.carpooling.state) {
         exclusive_or_carpooling = 1
     } else {
         return false
     }
     // check人数
-    if (!__checkTargetDistance(item.type_and_mileage)) return false;
+    if (!__checkTargetDistance(item.people_count)) return false;
     // check时间
     if (!__checkDate(item.date)) return false;
     // check起点
@@ -438,34 +389,40 @@ function checkItem(item) {
     // check金钱
     if (!__checkMoney(item.gold)) return false;
 
-    // 补充的一些check
-    if (global_type == 2) {
-        // 发布行程
-        if (!__checkStartingPointDistance(item.distance_of_end)) return false;
-    } else if (global_type == 1) {
-        if (intercity_config.intercity_goods || 
-            intercity_config.crosscity_goods) {
-            // 市内 跨城
-        } else if (intercity_config.common_route_goods) {
-            // 常用路线
-            if (!__checkOnTheway(item.ontheway)) return false;
-            if (!__checkEndPointDistance(item.distance_of_end)) return false;
-        }
+    if (intercity_config.intercity_goods || 
+        intercity_config.crosscity_goods) {
+        // 市内 跨城
+    } else if (intercity_config.common_route_goods) {
+
     }
     return true
 }
 
 // new 市内 城际 常用路线 发布形成 
 function newIntercity() {
+    //安卓版本高于Android 9
+    if(device.sdkInt>28){
+        //等待截屏权限申请并同意
+        threads.start(function () {
+            packageName('com.android.systemui').text('立即开始').waitFor();
+            text('立即开始').click();
+        });
+    }
+    //申请截屏权限
+    if (!requestScreenCapture()) {
+        toast("请求截图失败");
+        exit()
+    }
+
     let success = false
-    console.log("Helo")
+    console.log("Dida")
     // 初始化其他线程
     // initOtherThreads()
     // 等待出现在工作窗口
     waitWorkActivity()
     // 初始化刷新模块
     while (!initRefreshViews()) {
-        console.error('初始化刷新模块失败')
+        console.error('[!] 初始化刷新模块失败')
         sleep(1 * 1000)
     }
     sleep(1 * 1000)
@@ -477,6 +434,7 @@ function newIntercity() {
         // 开始获取订单信息列表
         let itemlist = getItemList()
         if (itemlist.length == 0) continue;
+        console.log(itemlist)
         console.log('开始处理订单信息')
         for (let index = 0; index < itemlist.length; index++) {
             if (success) break
@@ -490,35 +448,42 @@ function newIntercity() {
                         // 点击开始邀请
                         let istimeout = false
                         let temp_th = threads.start(function(){
-                            sleep(6 * 1000)
+                            sleep(10 * 1000)
                             istimeout = true
                         })
                         let okclick = false
                         // 不停点击确认
                         while (!istimeout) {
-                            let ok1 = id(idfix + "btn_main_title").text('确认').findOne(3 * 1000)
-                            if (ok1) {
-                                ok1.parent().parent().click()
-                                okclick = true
-                                continue
+                            let ok = text("顺路捎上乘客").findOnce()
+                            if (ok) {
+                                console.log("[*] 顺路捎上乘客")
+                                click(ok.bounds().centerX(), ok.bounds().centerY())
                             }
+                            if (text('确认并捎上乘客').exists()) {
+                                break
+                            }
+                        }
 
-                            let zkk = id(idfix + "btn_main_title").text('再看看').findOnce()
-                            if (zkk) zkk.parent().parent().click();
-        
-                            if (okclick) {
-                                if (id(idfix+"status_detail_btn").exists() ||
-                                    id(idfix+"detail_title").exists()) {
-                                    success = true
-                                    console.log('邀请成功')
-                                    break
-                                }
+                        while (!istimeout) {
+                            let zkk = text("确认并捎上乘客").findOnce()
+                            if (zkk) click(zkk.bounds().centerX(), zkk.bounds().centerY());
+                            console.log("[*] 确认并捎上乘客")
+                            zkk = text('我知道了').findOnce()
+                            if (zkk) zkk.click();
+                            console.log("[*] 我知道了")
+
+                            zkk = text("开始识别").findOnce()
+                            if (zkk) {
+                                console.log("[*] 开始识别")
+                                zkk.click();
+                                success = true
+                                console.log('邀请成功')
+                                break
                             }
                         }
             
                         try {
                             if (temp_th && temp_th.isAlive()) {
-                                console.log('中断定时器')
                                 temp_th.interrupt()
                             }
                         } catch (e) {
@@ -526,17 +491,11 @@ function newIntercity() {
                         }
             
                         if (success == false) {
-                            if (global_type == 2) {
-                                while (!id(idfix+"back_icon").exists()) {
-                                    back()
-                                    sleep(2000)
-                                }
-                            } else if (global_type == 1) {
-                                while (!id(idfix+"ch_tab_name").text("顺风车").exists()) {
-                                    back()
-                                    sleep(2000)
-                                }
+                            while (!id(idfix+"iv_bottom_update").exists()) {
+                                back()
+                                sleep(2000)
                             }
+                            initRefreshViews()
                         }
 
                     }
@@ -554,9 +513,15 @@ function intercity() {
     newIntercity()
 }
 
+function crosscity() {
+    newIntercity()
+}
+
 
 
 module.exports = {
     intercity: intercity,
     init_intercity: init_intercity,
+    crosscity: crosscity,
+    init_crosscity: init_crosscity,
 }

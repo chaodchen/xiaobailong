@@ -265,9 +265,9 @@ module.exports = {
 
         
             // 执行
-            script.init_crossCity()
+            script.init_crosscity()
             launch('com.didapinche.booking')
-            my_floaty(script.crossCity, null)
+            my_floaty(script.crosscity, null)
         })
 
     }
