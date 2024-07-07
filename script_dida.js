@@ -22,6 +22,10 @@ function init_intercity() {
         expressway : console._storage.get(console._dida_id('city-expressway')),
 
         exclusive : {
+
+
+
+
             state: console._storage.get(console._dida_id('city-exclusive')),
             people_min: Number(console._storage.get(console._dida_id('city-exclusive-people-min'))),
             people_max: Number(console._storage.get(console._dida_id('city-exclusive-people-max'))),
@@ -242,7 +246,7 @@ function getItemList() {
     goodListViwe.children().forEach(function(child, index) {
         if (child == null) return;
         if (child.className() != 'android.view.ViewGroup') return;
-        if (child.child(0).className() == 'android.view.ViewGroup') return;
+        if (child.child(0) && child.child(0).className() == 'android.view.ViewGroup') return;
         if (child.bounds().bottom > device.height*0.9) return;
         let result = {}
         console.log("第" + (index+1) + "项采集.")
@@ -371,6 +375,20 @@ function initRefreshViews() {
     return true
 }
 
+function __checkPay(str) {
+    console.log('[*] check已支付')
+    if (intercity_config.expressway) {
+        if (str == null || str == '') return false;
+        if (str == '已支付') {
+            return true
+        } else {
+            return false
+        }
+    } else {
+        return true
+    }
+}
+
 function checkItem(item) {
     // 独享还是拼单
     if (item.type.indexOf('独享') > -1 && intercity_config.exclusive.state) {
@@ -388,6 +406,8 @@ function checkItem(item) {
     if (!__checkStartingPointDistance(item.distance_of_start)) return false;
     // check金钱
     if (!__checkMoney(item.gold)) return false;
+    // check已支付
+    if (!__checkPay(item.ispay)) return false;
 
     if (intercity_config.intercity_goods || 
         intercity_config.crosscity_goods) {
@@ -455,18 +475,27 @@ function newIntercity() {
                         // 不停点击确认
                         while (!istimeout) {
                             let ok = text("顺路捎上乘客").findOnce()
+
                             if (ok) {
                                 console.log("[*] 顺路捎上乘客")
                                 click(ok.bounds().centerX(), ok.bounds().centerY())
                             }
-                            if (text('确认并捎上乘客').exists()) {
+
+                            if (text('确认并捎上乘客').exists() || text("确认捎上乘客").exists()) {
                                 break
                             }
                         }
 
                         while (!istimeout) {
-                            let zkk = text("确认并捎上乘客").findOnce()
-                            if (zkk) click(zkk.bounds().centerX(), zkk.bounds().centerY());
+                            let zkk = null
+                            if (intercity_config.intercity_goods) {
+                                zkk = text("确认并捎上乘客").findOnce()
+                                if (zkk) click(zkk.bounds().centerX(), zkk.bounds().centerY());
+                            } else if (intercity_config.crosscity_goods) {
+                                zkk = text("确认捎上乘客").findOnce()
+                                if (zkk) click(zkk.bounds().centerX(), zkk.bounds().centerY());
+                            }
+
                             console.log("[*] 确认并捎上乘客")
                             zkk = text('我知道了').findOnce()
                             if (zkk) zkk.click();
